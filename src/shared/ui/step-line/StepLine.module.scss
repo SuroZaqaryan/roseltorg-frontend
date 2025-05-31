@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px auto;
+}
+
+.dot {
+    font-size: 33px;
+    line-height: 0;
+    z-index: 1;
+    color: #e0e0e0;
+    user-select: none;
+
+    &:first-child {
+        margin-bottom: 12px;
+    }
+
+    &:last-child {
+        margin-top: 12px;
+    }
+}
+
+.dot.active {
+    color: #292929;
+}
+
+.step {
+    width: 100%;
+    border-radius: 1px;
+    transition: background 0.3s;
+}
