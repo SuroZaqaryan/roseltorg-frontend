@@ -1,9 +1,6 @@
 import {
-  CommentOutlined,
-  HeartOutlined,
   ReadOutlined,
   RocketOutlined,
-  SmileOutlined,
 } from '@ant-design/icons';
 import { Prompts, Welcome } from '@ant-design/x';
 import type { PromptsProps } from '@ant-design/x';
@@ -99,7 +96,7 @@ export const Prompt = () => {
             },
             item: {
               flex: 1,
-              width: 'calc(30% - 6px)',
+              // width: 'calc(30% - 6px)',
               backgroundImage: `linear-gradient(137deg, #e5f4ff 0%, #efe7ff 100%)`,
               border: 0,
               color: '#3e3e3e',
