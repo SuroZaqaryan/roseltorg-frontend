@@ -112,7 +112,7 @@ export const Copilot = (props: CopilotProps) => {
         <div className={styles.chatList}>
             {messages?.length ? (
                 <Bubble.List
-                    style={{ height: '100%', maxHeight: '750px', paddingInline: 16 }}
+                    style={{ height: '100%',  paddingInline: 16 }}
                     items={messages?.map((i) => ({
                         ...i.message,
                         classNames: {

@@ -4,8 +4,10 @@ import {
 } from '@ant-design/icons';
 import { Prompts, Welcome } from '@ant-design/x';
 import type { PromptsProps } from '@ant-design/x';
+import type { CopilotProps } from '../types/types'
+import { useCopilotLogic } from "../copilot/useCopilotLogic";
 import { App, ConfigProvider, Space, Card, Flex, theme } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import cl from './prompt.module.scss'
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
@@ -23,19 +25,12 @@ const items: PromptsProps['items'] = [
     children: [
       {
         key: '3-1',
-        // label: 'Fast Start',
         description: `Я хочу закупить стулья себе в офис в размере 30 штук, по адресу г. Москва, Тверская улица 56, со сроком не больше 15 дней с момента подписания договора`,
       },
       {
         key: '3-2',
-        // label: 'Online Playground',
         description: `Нужны ноутбуки для сотрудников (10 штук), доставка — г. Казань, ул. Пушкина 21, срок — 5 дней`,
       },
-      // {
-      //   key: '3-3',
-      //   label: 'Online Playground',
-      //   description: `Work with the code`,
-      // },
     ],
   },
   {
@@ -45,25 +40,24 @@ const items: PromptsProps['items'] = [
     children: [
       {
         key: '2-1',
-        // label: '',
         description: `Хочу внести изменения в предыдущее ТЗ — теперь нужно 40 стульев, доставка туда же, но в течение 10 дней`,
       },
       {
         key: '2-2',
-        // label: 'Set AI Role',
         description: `Есть старое ТЗ, нужно обновить: вместо мониторов закупить проекторы (5 шт), адрес и сроки те же`,
       },
-      // {
-      //   key: '2-3',
-      //   label: 'Research Design',
-      //   description: `Express the feeling`,
-      // },
     ],
   },
 ];
 
-export const Prompt = () => {
+ const Prompt = (props: CopilotProps) => {
   const { message } = App.useApp();
+
+  const { state: { messages } } = useCopilotLogic(props);
+
+  useEffect(() => {
+    console.log('Messages updated111:', messages);
+  }, [messages]);
 
   return (
     <ConfigProvider
@@ -71,6 +65,7 @@ export const Prompt = () => {
         algorithm: theme.defaultAlgorithm,
       }}
     >
+      <div>Messages count: {messages.length}</div>
       <Flex vertical gap={44} style={{ width: '100%', height: '100%', maxWidth: 1000 }}>
         <Card style={{ background: 'linear-gradient(97deg, #f2f9fe 0%, #f7f3ff 100%)', }}>
           <Welcome
@@ -115,3 +110,5 @@ export const Prompt = () => {
     </ConfigProvider>
   );
 };
+
+export default Prompt;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Copilot  from "./copilot/copilot.tsx";
-import {useWorkareaStyle} from "./styles/useWorkareaStyle.ts";
-import { Prompt } from './prompts/prompt';
+import Copilot from "./copilot/copilot.tsx";
+import { useWorkareaStyle } from "./styles/useWorkareaStyle.ts";
+import Prompt from './prompts/prompt';
 
 const CopilotDemo = () => {
     const { styles: workareaStyles } = useWorkareaStyle();
@@ -37,7 +37,7 @@ const CopilotDemo = () => {
                 // style={{ margin: copilotOpen ? 16 : '16px 48px' }}
                 >
                     <div className={workareaStyles.bodyContent}>
-                        <Prompt />
+                        <Prompt copilotOpen={copilotOpen} setCopilotOpen={setCopilotOpen} />
                     </div>
                 </div>
             </div>

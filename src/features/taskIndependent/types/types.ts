@@ -1,6 +1,7 @@
 export type BubbleDataType = {
-  role: string;
-  content: string;
+    content: string;
+    role: string;
+    files?: any[];
 };
 
 export interface CopilotProps {

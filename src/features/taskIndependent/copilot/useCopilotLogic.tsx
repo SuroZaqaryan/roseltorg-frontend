@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-
+import axios from "axios";
 import { MOCK_SESSION_LIST } from "../mocks/mocks";
 import type { BubbleDataType, CopilotProps } from "../types/types";
 import type { Conversation } from "@ant-design/x/es/conversations";
@@ -20,6 +20,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
     const attachmentsRef = useRef<GetRef<typeof Attachments>>(null);
     const abortController = useRef<AbortController>(null);
 
+    const [currentResponse, setCurrentResponse] = useState<BubbleDataType | null>(null);
     const [messageHistory, setMessageHistory] = useState<Record<string, any>>({});
     const [sessionList, setSessionList] = useState<Conversation[]>(MOCK_SESSION_LIST);
     const [curSession, setCurSession] = useState(sessionList[0].key);
@@ -28,9 +29,42 @@ export const useCopilotLogic = (props: CopilotProps) => {
     const [inputValue, setInputValue] = useState('');
 
     const [agent] = useXAgent<BubbleDataType>({
-        baseURL: 'https://api.x.ant.design/api/llm_siliconflow_deepseekr1',
-        model: 'deepseek-ai/DeepSeek-R1',
-        dangerouslyApiKey: 'Bearer sk-xxxxxxxxxxxxxxxxxxxx',
+        request: async ({ message, model, signal }, { onSuccess }) => {
+            const file = message?.files?.[0];
+
+            const formData = new FormData();
+            
+            if (file) {
+                formData.append('file', file.originFileObj || file);
+            }
+
+            formData.append('message', message?.content || '');
+            formData.append('model', model);
+
+            try {
+                const res = await axios.post(
+                    'http://localhost:8080/api/conversation',
+                    formData,
+                    {
+                        headers: {
+                            Authorization: 'Bearer sk-xxxxxxxxxxxxxxxxxxxx',
+                        },
+                        signal, 
+                    }
+                );
+
+                const data = res.data;
+
+                setCurrentResponse(data);
+                onSuccess?.([{...(data || {}), role: 'assistant' }]);
+            } catch (error) {
+                if (axios.isCancel?.(error)) {
+                    console.warn('Request canceled', error.message);
+                } else {
+                    console.error('Request failed:', error);
+                }
+            }
+        },
     });
 
     const loading = agent.isRequesting();
@@ -49,39 +83,49 @@ export const useCopilotLogic = (props: CopilotProps) => {
                 role: 'assistant',
             };
         },
-        transformMessage: (info) => {
-            const { originMessage, chunk } = info || {};
-            let currentContent = '';
-            let currentThink = '';
-            try {
-                if (chunk?.data && !chunk?.data.includes('DONE')) {
-                    const message = JSON.parse(chunk?.data);
-                    currentThink = message?.choices?.[0]?.delta?.reasoning_content || '';
-                    currentContent = message?.choices?.[0]?.delta?.content || '';
-                }
-            } catch (error) {
-                console.error(error);
-            }
+        // transformMessage: (info) => {
+        //     const content = typeof info.chunks[0] === 'string' ? info.chunks[0] : '';
 
-            let content = '';
+        //     setCurrentResponse(content ? { content, role: 'assistant' } : null);
 
-            if (!originMessage?.content && currentThink) {
-                content = `<think>${currentThink}`;
-            } else if (
-                originMessage?.content?.includes('<think>') &&
-                !originMessage?.content.includes('</think>') &&
-                currentContent
-            ) {
-                content = `${originMessage?.content}</think>${currentContent}`;
-            } else {
-                content = `${originMessage?.content || ''}${currentThink}${currentContent}`;
-            }
+        //     return {
+        //         content,
+        //         role: 'assistant',
+        //     };
+        // },
+        // transformMessage: (info) => {
+        //     const { originMessage, chunk } = info || {};
+        //     let currentContent = '';
+        //     let currentThink = '';
+        //     try {
+        //         if (chunk?.data && !chunk?.data.includes('DONE')) {
+        //             const message = JSON.parse(chunk?.data);
+        //             currentThink = message?.choices?.[0]?.delta?.reasoning_content || '';
+        //             currentContent = message?.choices?.[0]?.delta?.content || '';
+        //         }
+        //     } catch (error) {
+        //         console.error(error);
+        //     }
 
-            return {
-                content: content,
-                role: 'assistant',
-            };
-        },
+        //     let content = '';
+
+        //     if (!originMessage?.content && currentThink) {
+        //         content = `<think>${currentThink}`;
+        //     } else if (
+        //         originMessage?.content?.includes('<think>') &&
+        //         !originMessage?.content.includes('</think>') &&
+        //         currentContent
+        //     ) {
+        //         content = `${originMessage?.content}</think>${currentContent}`;
+        //     } else {
+        //         content = `${originMessage?.content || ''}${currentThink}${currentContent}`;
+        //     }
+
+        //     return {
+        //         content: content,
+        //         role: 'assistant',
+        //     };
+        // },
         resolveAbortController: (controller) => {
             abortController.current = controller;
         },
@@ -89,7 +133,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
 
     const handleUserSubmit = (val: string) => {
         onRequest({
-            stream: true,
+            stream: false,
             message: {
                 content: val,
                 role: 'user',
@@ -143,6 +187,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
             messageHistory,
             sessionList,
             curSession,
+            currentResponse,
             attachmentsOpen,
             files,
             inputValue,
@@ -152,6 +197,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
         },
         actions: {
             setCopilotOpen,
+            setCurrentResponse,
             setSessionList,
             setCurSession,
             setAttachmentsOpen,
