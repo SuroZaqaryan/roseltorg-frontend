@@ -6,10 +6,8 @@ import Prompt from './prompts/prompt';
 const CopilotDemo = () => {
     const { styles: workareaStyles } = useWorkareaStyle();
 
-    // ==================== State =================
     const [copilotOpen, setCopilotOpen] = useState(true);
 
-    // ==================== Render =================
     return (
         <div className={workareaStyles.copilotWrapper}>
             {/** 左侧工作区 */}
@@ -37,7 +35,7 @@ const CopilotDemo = () => {
                 // style={{ margin: copilotOpen ? 16 : '16px 48px' }}
                 >
                     <div className={workareaStyles.bodyContent}>
-                        <Prompt copilotOpen={copilotOpen} setCopilotOpen={setCopilotOpen} />
+                        <Prompt />
                     </div>
                 </div>
             </div>

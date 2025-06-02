@@ -21,6 +21,7 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
       border-top-left-radius: 16px;
       border-bottom-left-radius: 16px;
       border-right: none;
+      overflow: auto;
     `,
     workareaHeader: css`
       box-sizing: border-box;
@@ -60,7 +61,7 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
     `,
     workareaBody: css`
       flex: 1;
-      padding: 32px;
+      // padding: 32px;
           margin: 30px;
     border-radius: 16px;
       background: ${token.colorBgContainer};
@@ -77,7 +78,7 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
         justify-content: center;
         flex-direction: column;
       overflow: auto;
-      max-width: 1200px;
+      // max-width: 1200px;
       // padding: 16px 32px;
       margin: 0 auto;
       height: 100%;

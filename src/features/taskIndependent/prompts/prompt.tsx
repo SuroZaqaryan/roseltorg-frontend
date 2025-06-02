@@ -1,13 +1,14 @@
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import * as XLSX from 'xlsx';
 import {
   ReadOutlined,
   RocketOutlined,
 } from '@ant-design/icons';
 import { Prompts, Welcome } from '@ant-design/x';
 import type { PromptsProps } from '@ant-design/x';
-import type { CopilotProps } from '../types/types'
-import { useCopilotLogic } from "../copilot/useCopilotLogic";
+import FilePreviewTable from './FilePreviewTable';
+import { useTaskStore } from '../../../shared/stores/useCopilot';
 import { App, ConfigProvider, Space, Card, Flex, theme } from 'antd';
-import React, { useEffect } from 'react';
 import cl from './prompt.module.scss'
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
@@ -49,15 +50,72 @@ const items: PromptsProps['items'] = [
     ],
   },
 ];
-
- const Prompt = (props: CopilotProps) => {
+const Prompt = () => {
   const { message } = App.useApp();
+  const { uploadedFile } = useTaskStore();
 
-  const { state: { messages } } = useCopilotLogic(props);
+  const [filePreview, setFilePreview] = useState<any[][] | null>(null);
+  const [flexHeight, setFlexHeight] = useState<number>(0);
+  const flexRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (flexRef.current) {
+      setFlexHeight(flexRef.current.offsetHeight);
+    }
+  }, [filePreview]); 
 
   useEffect(() => {
-    console.log('Messages updated111:', messages);
-  }, [messages]);
+    if (!flexRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.contentRect) {
+          setFlexHeight(entry.contentRect.height);
+        }
+      }
+    });
+
+    observer.observe(flexRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const previewFile = async () => {
+    if (!uploadedFile || typeof uploadedFile !== 'object' || !uploadedFile.url) return;
+
+    try {
+      const response = await fetch(uploadedFile.url);
+      if (!response.ok) {
+        throw new Error('Не удалось загрузить файл с сервера');
+      }
+
+      const blob = await response.blob();
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = e.target?.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        setFilePreview(jsonData as any[][]);
+      };
+
+      reader.readAsBinaryString(blob);
+    } catch (error) {
+      console.error('Ошибка при обработке файла:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (uploadedFile) {
+      previewFile();
+    } else {
+      setFilePreview(null);
+    }
+  }, [uploadedFile]);
 
   return (
     <ConfigProvider
@@ -65,47 +123,62 @@ const items: PromptsProps['items'] = [
         algorithm: theme.defaultAlgorithm,
       }}
     >
-      <div>Messages count: {messages.length}</div>
-      <Flex vertical gap={44} style={{ width: '100%', height: '100%', maxWidth: 1000 }}>
-        <Card style={{ background: 'linear-gradient(97deg, #f2f9fe 0%, #f7f3ff 100%)', }}>
-          <Welcome
-            variant="borderless"
-            icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
-            title="Привет! я ваш помощник OMI"
-            description="OMI поможет вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
-            style={{
+      <Flex
+        vertical
+        ref={flexRef}
+        gap={44}
+        style={{
+          width: '100%',
+          height: '100%',
+          maxWidth: filePreview ? undefined : 1000,
+          padding: filePreview ? 0 : 32,
+        }}
+      >
 
-              borderStartStartRadius: 4,
-            }}
-          />
-        </Card>
 
-        <Prompts
-          title="Что вы хотите сделать?"
-          items={items}
-          wrap
-          className={cl.prompts}
-          styles={{
-            list: {
-              width: '100%',
-            },
-            item: {
-              flex: 1,
-              // width: 'calc(30% - 6px)',
-              backgroundImage: `linear-gradient(137deg, #e5f4ff 0%, #efe7ff 100%)`,
-              border: 0,
-              color: '#3e3e3e',
-            },
-            subItem: {
-              background: 'rgba(255,255,255,0.45)',
-              border: '1px solid #FFF',
-              height: '100%'
-            },
-          }}
-          onItemClick={(info) => {
-            message.success(`You clicked a prompt: ${info.data.key}`);
-          }}
-        />
+        {filePreview ?
+          <FilePreviewTable filePreview={filePreview} containerHeight={flexHeight} />
+          :
+          <>
+            <Card style={{ background: 'linear-gradient(97deg, #f2f9fe 0%, #f7f3ff 100%)', }}>
+              <Welcome
+                variant="borderless"
+                icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
+                title="Привет! я ваш помощник OMI"
+                description="OMI поможет вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
+                style={{
+                  borderStartStartRadius: 4,
+                }}
+              />
+            </Card>
+
+            <Prompts
+              title="Что вы хотите сделать?"
+              items={items}
+              wrap
+              className={cl.prompts}
+              styles={{
+                list: {
+                  width: '100%',
+                },
+                item: {
+                  flex: 1,
+                  backgroundImage: `linear-gradient(137deg, #e5f4ff 0%, #efe7ff 100%)`,
+                  border: 0,
+                  color: '#3e3e3e',
+                },
+                subItem: {
+                  background: 'rgba(255,255,255,0.45)',
+                  border: '1px solid #FFF',
+                  height: '100%'
+                },
+              }}
+              onItemClick={(info) => {
+                message.success(`You clicked a prompt: ${info.data.key}`);
+              }}
+            />
+          </>
+        }
       </Flex>
     </ConfigProvider>
   );
