@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Copilot from "./copilot/copilot.tsx";
 import { useWorkareaStyle } from "./styles/useWorkareaStyle.ts";
-import Prompt from './prompts/prompt';
+import Prompt from './prompts/Prompt/prompt.tsx';
 
 const CopilotDemo = () => {
     const { styles: workareaStyles } = useWorkareaStyle();

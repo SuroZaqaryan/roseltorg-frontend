@@ -6,8 +6,8 @@ import {
 } from '@ant-design/icons';
 import { Prompts, Welcome } from '@ant-design/x';
 import type { PromptsProps } from '@ant-design/x';
-import FilePreviewTable from './FilePreviewTable';
-import { useTaskStore } from '../../../shared/stores/useCopilot';
+import FilePreviewTable from '../FilePreviewTable/FilePreviewTable';
+import { useTaskStore } from '../../../../shared/stores/useCopilot';
 import { App, ConfigProvider, Space, Card, Flex, theme } from 'antd';
 import cl from './prompt.module.scss'
 
