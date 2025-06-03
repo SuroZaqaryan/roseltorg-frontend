@@ -44,13 +44,15 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
 
       .ant-bubble-content {
         background: #8680b7;
+        padding: 18px 20px;
         border-radius: 36px;
+        font-size: 15px;
         color: ${token.colorTextLightSolid};
       }
     `,
     chatWelcome: css`
       margin-inline: 16px;
-      padding: 12px 16px;
+      padding: 12px 18px;
       border-radius: 2px 12px 12px 12px;
       background: #282828;
       margin-bottom: 16px;
@@ -64,6 +66,19 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
     // chatSend 样式
     chatSend: css`
       padding: 12px;
+      .ant-sender-header-header {
+        border-top-left-radius: 36px;
+        border-top-right-radius: 36px;
+        padding-block: 12px;
+        padding-inline-start: 22px;
+        padding-inline-end: 14px;
+        background: #8680b7;
+
+        .ant-sender-header-title,
+        .ant-btn-icon > span {
+          color: #fff;
+        }
+      }
         .ant-sender {
           border-radius: 32px;
           box-shadow: none;
@@ -84,6 +99,10 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
     speechButton: css`
       font-size: 18px;
       color: ${token.colorText} !important;
+    `,
+    sendButton: css`
+      background: #6b6691;
+      box-shadow: none;
     `,
   };
 });

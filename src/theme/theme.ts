@@ -1,6 +1,7 @@
 const theme = {
     token: {
         colorPrimary: '#1c1c1c',
+        colorBorder: '#d8dde6',
     },
 
     components: {
@@ -18,10 +19,6 @@ const theme = {
         Typography: {
             fontSize: 16, // базовый размер шрифта
         },
-
-        Table: {
-            // borderColor: 'red',
-        }
     }
 }
 

@@ -2,6 +2,13 @@
     width: 100%;
 }
 
-.ant-prompts-list {
-    background: yellow !important;
+.welcomeCard {
+    background: linear-gradient(97deg, #f2f9fe 0%, #f7f3ff 100%);
+    border-radius: 16px;
+}
+
+.promptContent,
+.promptContainer {
+    width: 100%;
+    height: 100%;
 }

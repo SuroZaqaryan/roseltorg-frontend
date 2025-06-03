@@ -3,28 +3,28 @@ import { OpenAIFilled } from '@ant-design/icons';
 export const MOCK_SESSION_LIST = [
     {
         key: '5',
-        label: 'New session',
-        group: 'Today',
+        label: 'Новая сессия',
+        group: 'Сегодня',
     },
     {
         key: '4',
-        label: 'What has Ant Design X upgraded?',
-        group: 'Today',
+        label: 'Что ты умеешь делать?',
+        group: 'Сегодня',
     },
     {
         key: '3',
-        label: 'New AGI Hybrid Interface',
-        group: 'Today',
+        label: 'Новый гибридный интерфейс AGI',
+        group: 'Сегодня',
     },
     {
         key: '2',
-        label: 'How to quickly install and import components?',
-        group: 'Yesterday',
+        label: 'Как внести изменения в ТЗ?',
+        group: 'Вчера',
     },
     {
         key: '1',
-        label: 'What is Ant Design X?',
-        group: 'Yesterday',
+        label: 'Что ты умеешь делать?',
+        group: 'Вчера',
     },
 ];
 
@@ -43,7 +43,7 @@ export const MOCK_SUGGESTIONS = [
 ];
 
 export const MOCK_QUESTIONS = [
-    'What has Ant Design X upgraded?',
-    'What components are in Ant Design X?',
-    'How to quickly install and import components?',
+    'Что ты умеешь делать?',
+    'Как создать новое ТЗ?',
+    'Как внести изменения в ТЗ?',
 ];

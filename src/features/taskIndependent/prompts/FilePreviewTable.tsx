@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
+import cl from './FilePreviewTable.module.scss'
 
 interface FilePreviewTableProps {
     filePreview: any[][];
@@ -16,7 +17,7 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
 
     const normalizedData = isSingleRow ? [filePreview] : filePreview;
 
-    const headers = normalizedData[0]?.map((_, index) => `Column ${index + 1}`) || [];
+    const headers = normalizedData[0]?.map((_, index) => `Колонка ${index + 1}`) || [];
 
     const dataRows = isSingleRow ? normalizedData : normalizedData.slice(1);
 
@@ -55,6 +56,7 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
         <Table
             columns={columns}
             dataSource={dataSource}
+            className={cl.table}
             bordered
             pagination={false}
             virtual

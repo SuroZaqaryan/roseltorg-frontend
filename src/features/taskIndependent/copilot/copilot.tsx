@@ -20,7 +20,7 @@ const { Text } = Typography;
 
 export const Copilot = (props: CopilotProps) => {
     const { styles } = useCopilotStyle();
-     const abortController = useRef<AbortController>(null);
+    const abortController = useRef<AbortController>(null);
 
     const {
         state: {
@@ -62,7 +62,7 @@ export const Copilot = (props: CopilotProps) => {
                             abortController.current?.abort();
                             setTimeout(() => {
                                 setSessionList([
-                                    { key: timeNow, label: 'New session', group: 'Today' },
+                                    { key: timeNow, label: 'Новая сессия', group: 'Сегодня' },
                                     ...sessionList,
                                 ]);
                                 setCurSession(timeNow);
@@ -112,20 +112,20 @@ export const Copilot = (props: CopilotProps) => {
         <div className={styles.chatList}>
             {messages?.length ? (
                 <Bubble.List
-                    style={{ height: '100%',  paddingInline: 16 }}
+                    style={{ height: '100%', paddingInline: 16 }}
                     items={messages?.map((i) => ({
                         ...i.message,
                         classNames: {
                             content: i.status === 'loading' ? styles.loadingMessage : '',
                         },
                         typing: i.status === 'loading' ? { step: 5, interval: 20, suffix: <>💗</> } : false,
-                        avatar: i.message.role === 'assistant' ? { src: 'https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp'} : undefined,
+                        avatar: i.message.role === 'assistant' ? { src: 'https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp' } : undefined,
                     }))}
                     roles={{
                         assistant: {
                             placement: 'start',
                             header: (
-                                <Text style={{fontWeight: '500'}}>OMI</Text>
+                                <Text style={{ fontWeight: '500' }}>OMI</Text>
                             ),
                             footer: (
                                 <div style={{ display: 'flex' }}>
@@ -149,12 +149,10 @@ export const Copilot = (props: CopilotProps) => {
                 <>
                     <Prompts
                         vertical
-                        title="Я могу помочь вам с: "
+                        title="С чем OMI может помочь: "
                         items={MOCK_QUESTIONS.map((i) => ({ key: i, description: i }))}
                         onItemClick={(info) => handleUserSubmit(info?.data?.description as string)}
-                        style={{
-                            marginInline: 16,
-                        }}
+                        style={{ marginInline: 16 }}
                         styles={{
                             title: { fontSize: 14 },
                             item: { background: '#8680b7', color: '#fff', borderRadius: 36 },
@@ -167,7 +165,7 @@ export const Copilot = (props: CopilotProps) => {
 
     const sendHeader = (
         <Sender.Header
-            title="Upload File"
+            title="XLS, DOCX, PDF"
             styles={{ content: { padding: 0 } }}
             open={attachmentsOpen}
             onOpenChange={setAttachmentsOpen}
@@ -191,11 +189,11 @@ export const Copilot = (props: CopilotProps) => {
                 }}
                 placeholder={(type) =>
                     type === 'drop'
-                        ? { title: 'Drop file here' }
+                        ? { title: 'Перетащите файл сюда' }
                         : {
                             icon: <CloudUploadOutlined />,
-                            title: 'Upload files',
-                            description: 'Click or drag files to this area to upload',
+                            title: 'Загрузить файлы',
+                            description: 'Нажмите или перетащите файлы в эту область для загрузки',
                         }
                 }
             />
@@ -238,7 +236,7 @@ export const Copilot = (props: CopilotProps) => {
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                                     <SpeechButton className={styles.speechButton} />
-                                    {loading ? <LoadingButton type="default" /> : <SendButton type="primary" />}
+                                    {loading ? <LoadingButton type="default" /> : <SendButton  className={styles.sendButton} />}
                                 </div>
                             );
                         }}

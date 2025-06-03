@@ -46,7 +46,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
             try {
                 const res = await axios.post(
                     'http://localhost:8080/api/conversation',
-                    formData,
+                    formData, 
                     {
                         headers: {
                             Authorization: 'Bearer sk-xxxxxxxxxxxxxxxxxxxx',
@@ -98,18 +98,22 @@ export const useCopilotLogic = (props: CopilotProps) => {
                 role: 'user',
                 files,
                 messageRender: () => (
-                    <div>
+                    <Flex vertical gap={6}>
                         {val}
                         {
                             files && files.length > 0 && (
                                 <Flex vertical gap="middle">
                                     {(files as any[]).map((item) => (
-                                        <Attachments.FileCard key={item.uid} item={item} />
+                                        <Attachments.FileCard
+                                         key={item.uid}
+                                          item={item} 
+                                          style={{borderRadius: 18, border: '1px solid #dbdbdb'}}
+                                           />
                                     ))}
                                 </Flex>
                             )
                         }
-                    </div>
+                    </Flex>
                 ),
             },
         });
@@ -117,7 +121,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
         setInputValue('');
         setFiles([]);
 
-        if (sessionList.find((i) => i.key === curSession)?.label === 'New session') {
+        if (sessionList.find((i) => i.key === curSession)?.label === 'Новая сессия') {
             setSessionList(
                 sessionList.map((i) => (i.key !== curSession ? i : { ...i, label: val?.slice(0, 20) })),
             );

@@ -50,7 +50,11 @@ const items: PromptsProps['items'] = [
     ],
   },
 ];
+
+const { useToken } = theme;
+
 const Prompt = () => {
+  const { token } = useToken(); 
   const { message } = App.useApp();
   const { uploadedFile } = useTaskStore();
 
@@ -62,7 +66,7 @@ const Prompt = () => {
     if (flexRef.current) {
       setFlexHeight(flexRef.current.offsetHeight);
     }
-  }, [filePreview]); 
+  }, [filePreview]);
 
   useEffect(() => {
     if (!flexRef.current) return;
@@ -124,61 +128,66 @@ const Prompt = () => {
       }}
     >
       <Flex
-        vertical
-        ref={flexRef}
-        gap={44}
+        justify='center'
+        className={cl.promptContainer}
         style={{
-          width: '100%',
-          height: '100%',
-          maxWidth: filePreview ? undefined : 1000,
-          padding: filePreview ? 0 : 32,
+          borderRadius: filePreview ? undefined : '16px',
+          border: filePreview ? undefined : `1px solid ${token.colorBorder}`,
         }}
       >
+        <Flex
+          vertical
+          ref={flexRef}
+          gap={44}
+          className={cl.promptContent}
+          style={{
+            maxWidth: filePreview ? undefined : 1000,
+            padding: filePreview ? 0 : 32,
+          }}
+        >
+          {filePreview ?
+            <FilePreviewTable filePreview={filePreview} containerHeight={flexHeight} />
+            :
+            <>
+              <Card className={cl.welcomeCard}>
+                <Welcome
+                  variant="borderless"
+                  icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
+                  title="Привет! я ваш помощник OMI"
+                  description="OMI поможет вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
+                />
+              </Card>
 
-
-        {filePreview ?
-          <FilePreviewTable filePreview={filePreview} containerHeight={flexHeight} />
-          :
-          <>
-            <Card style={{ background: 'linear-gradient(97deg, #f2f9fe 0%, #f7f3ff 100%)', }}>
-              <Welcome
-                variant="borderless"
-                icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
-                title="Привет! я ваш помощник OMI"
-                description="OMI поможет вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
-                style={{
-                  borderStartStartRadius: 4,
+              <Prompts
+                title="Что вы хотите сделать?"
+                items={items}
+                wrap
+                className={cl.prompts}
+                styles={{
+                  list: {
+                    width: '100%',
+                  },
+                  item: {
+                    flex: 1,
+                    backgroundImage: `linear-gradient(137deg, #e5f4ff 0%, #efe7ff 100%)`,
+                    border: 0,
+                    color: '#3e3e3e',
+                    borderRadius: 16,
+                    padding: '14px 23px',
+                  },
+                  subItem: {
+                    background: 'rgba(255,255,255,0.45)',
+                    border: '1px solid #FFF',
+                    height: '100%'
+                  },
+                }}
+                onItemClick={(info) => {
+                  message.success(`You clicked a prompt: ${info.data.key}`);
                 }}
               />
-            </Card>
-
-            <Prompts
-              title="Что вы хотите сделать?"
-              items={items}
-              wrap
-              className={cl.prompts}
-              styles={{
-                list: {
-                  width: '100%',
-                },
-                item: {
-                  flex: 1,
-                  backgroundImage: `linear-gradient(137deg, #e5f4ff 0%, #efe7ff 100%)`,
-                  border: 0,
-                  color: '#3e3e3e',
-                },
-                subItem: {
-                  background: 'rgba(255,255,255,0.45)',
-                  border: '1px solid #FFF',
-                  height: '100%'
-                },
-              }}
-              onItemClick={(info) => {
-                message.success(`You clicked a prompt: ${info.data.key}`);
-              }}
-            />
-          </>
-        }
+            </>
+          }
+        </Flex>
       </Flex>
     </ConfigProvider>
   );
