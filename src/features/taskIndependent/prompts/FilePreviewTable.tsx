@@ -1,30 +1,31 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Typography, Flex , Button} from 'antd';
 import type { TableProps } from 'antd';
 import cl from './FilePreviewTable.module.scss'
+import type { TaskUploadedFile } from '../../../shared/stores/useCopilot'
 
 interface FilePreviewTableProps {
     filePreview: any[][];
-    containerHeight?: number;
+    uploadedFile: TaskUploadedFile | null,
 }
 
-const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, containerHeight }) => {
+const { Text } = Typography;
+
+
+const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, uploadedFile }) => {
     if (!filePreview || filePreview.length === 0) {
         return null;
     }
 
-    const isSingleRow = !Array.isArray(filePreview[0]);
+    console.log('uploadedFile', uploadedFile);
 
-    const normalizedData = isSingleRow ? [filePreview] : filePreview;
 
-    const headers = normalizedData[0]?.map((_, index) => `Колонка ${index + 1}`) || [];
+    const headers = Object.keys(filePreview[0] || {});
 
-    const dataRows = isSingleRow ? normalizedData : normalizedData.slice(1);
-
-    const columns: TableProps<any>['columns'] = headers.map((header, index) => ({
+    const columns: TableProps<any>['columns'] = headers.map((header) => ({
         title: header,
-        dataIndex: index.toString(),
-        key: index.toString(),
+        dataIndex: header,
+        key: header,
         ellipsis: true,
         render: (text) => {
             if (text == null) return '-';
@@ -33,23 +34,11 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
         },
     }));
 
-    const dataSource = dataRows.map((row, rowIndex) => {
-        const rowObject: Record<string, any> = { key: rowIndex.toString() };
 
-        // Обрабатываем как массив значений
-        if (Array.isArray(row)) {
-            row.forEach((cell, cellIndex) => {
-                rowObject[cellIndex.toString()] = cell;
-            });
-        } else {
-            // Если строка - это объект (на случай если данные придут в другом формате)
-            Object.entries(row).forEach(([key, value]) => {
-                rowObject[key] = value;
-            });
-        }
-
-        return rowObject;
-    });
+    const dataSource = filePreview.map((row, index) => ({
+        ...row,
+        key: index.toString(),
+    }));
 
     return (
         <Table
@@ -58,8 +47,16 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
             className={cl.table}
             bordered
             pagination={false}
+            title={() => (
+                <Flex align='center' justify='space-between'>
+                    <Text style={{ fontWeight: 500 }}>{uploadedFile?.name}</Text>
+                    <Flex gap={8}>
+                        <Button style={{background: '#706b9e', color: '#fff', lineHeight: 1}} >Редактировать</Button>
+                        <Button variant='outlined' style={{lineHeight: 1}}>Скачать</Button>
+                    </Flex>
+                </Flex>
+            )}
             virtual
-        // scroll={{ x: 2000, y: containerHeight ? containerHeight - 60 : 400, }}
         />
     );
 };

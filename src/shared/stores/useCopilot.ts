@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-interface UploadedFile {
+export interface TaskUploadedFile {
   name: string;
   type: string;
   url: string;
 }
 
 interface TaskStore {
-  uploadedFile: UploadedFile | null;
-  setUploadedFile: (file: UploadedFile | null) => void;
+  uploadedFile: TaskUploadedFile | null;
+  setUploadedFile: (file: TaskUploadedFile | null) => void;
 }
 
 export const useTaskStore = create<TaskStore>()(

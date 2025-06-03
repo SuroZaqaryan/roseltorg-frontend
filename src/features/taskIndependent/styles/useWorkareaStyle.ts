@@ -20,8 +20,8 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
       background: #fff;
       border-top-left-radius: 16px;
       border-bottom-left-radius: 16px;
-      border-right: none;
       overflow: auto;
+      border-right: none;
     `,
     workareaHeader: css`
       box-sizing: border-box;
@@ -71,7 +71,6 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
         align-items: center;
         justify-content: center;
         flex-direction: column;
-      overflow: auto;
       // max-width: 1200px;
       // padding: 16px 32px;
       margin: 0 auto;
