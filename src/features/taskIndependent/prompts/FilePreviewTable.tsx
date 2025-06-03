@@ -25,7 +25,7 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
         title: header,
         dataIndex: index.toString(),
         key: index.toString(),
-         ellipsis: true,
+        ellipsis: true,
         render: (text) => {
             if (text == null) return '-';
             if (typeof text === 'boolean') return text.toString();
@@ -51,7 +51,6 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
         return rowObject;
     });
 
-    console.log('containerHeight', containerHeight)
     return (
         <Table
             columns={columns}
@@ -60,7 +59,7 @@ const FilePreviewTable: React.FC<FilePreviewTableProps> = ({ filePreview, contai
             bordered
             pagination={false}
             virtual
-            // scroll={{ x: 2000, y: containerHeight ? containerHeight - 60 : 400, }}
+        // scroll={{ x: 2000, y: containerHeight ? containerHeight - 60 : 400, }}
         />
     );
 };

@@ -54,7 +54,7 @@ const items: PromptsProps['items'] = [
 const { useToken } = theme;
 
 const Prompt = () => {
-  const { token } = useToken(); 
+  const { token } = useToken();
   const { message } = App.useApp();
   const { uploadedFile } = useTaskStore();
 
@@ -166,6 +166,7 @@ const Prompt = () => {
                 styles={{
                   list: {
                     width: '100%',
+                    gap: 22,
                   },
                   item: {
                     flex: 1,

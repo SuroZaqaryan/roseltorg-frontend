@@ -82,12 +82,11 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
         .ant-sender {
           border-radius: 32px;
           box-shadow: none;
+        }
 
-          textarea {
-            ::placeholder {
-              // font-size: 16px;
-            }
-          }
+       .ant-sender:has(textarea:focus) {
+          border-color:rgba(96, 91, 137, 0.30);
+          outline: none;
         }
     `,
     sendAction: css`

@@ -61,8 +61,7 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
     `,
     workareaBody: css`
       flex: 1;
-          margin: 30px;
- 
+      margin: 20px;
       background: ${token.colorBgContainer};
       min-height: 0;
       border-bottom-left-radius: 16px;
