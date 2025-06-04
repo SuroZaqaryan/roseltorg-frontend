@@ -6,5 +6,10 @@
     border-bottom: 1px solid #7a769c42 !important;
     border-top-left-radius: 18px !important;
     border-top-right-radius: 18px !important;
-    padding: 16px 18px !important;
+    padding: 12px 18px !important;
+}
+
+.ant-table-container {
+    overflow: auto;
+    height: calc(100vh - 13rem);
 }

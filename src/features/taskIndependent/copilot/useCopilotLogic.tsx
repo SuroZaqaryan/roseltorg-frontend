@@ -5,7 +5,8 @@ import type { BubbleDataType, CopilotProps } from "../types/types";
 import type { Conversation } from "@ant-design/x/es/conversations";
 import type { GetProp, GetRef } from "antd";
 import { Flex } from "antd";
-import {useTaskStore} from "../../../shared/stores/useCopilot";
+import { useTaskStore } from "../../../shared/stores/useCopilot";
+import cl from './styles/useCopilotLogic.module.scss'
 
 import {
     Attachments,
@@ -46,7 +47,7 @@ export const useCopilotLogic = (props: CopilotProps) => {
             try {
                 const res = await axios.post(
                     'http://localhost:8080/api/conversation',
-                    formData, 
+                    formData,
                     {
                         headers: {
                             Authorization: 'Bearer sk-xxxxxxxxxxxxxxxxxxxx',
@@ -105,10 +106,11 @@ export const useCopilotLogic = (props: CopilotProps) => {
                                 <Flex vertical gap="middle">
                                     {(files as any[]).map((item) => (
                                         <Attachments.FileCard
-                                         key={item.uid}
-                                          item={item} 
-                                          style={{borderRadius: 18, border: '1px solid #dbdbdb'}}
-                                           />
+                                            key={item.uid}
+                                            item={item}
+                                            className={cl.FileCard}
+                                            style={{ borderRadius: 18, border: '1px solid #dbdbdb' }}
+                                        />
                                     ))}
                                 </Flex>
                             )

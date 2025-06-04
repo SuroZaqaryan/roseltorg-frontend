@@ -128,7 +128,7 @@ export const Copilot = (props: CopilotProps) => {
                                 <Text style={{ fontWeight: '500' }}>OMI</Text>
                             ),
                             footer: (
-                                <div style={{ display: 'flex' }}>
+                                <div style={{ display: 'flex', position: 'relative', top: '-5px' }}>
                                     <Button type="text" size="small" icon={<ReloadOutlined />} />
                                     <Button type="text" size="small" icon={<CopyOutlined />} />
                                 </div>
