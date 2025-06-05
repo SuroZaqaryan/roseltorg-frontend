@@ -14,14 +14,7 @@ const CopilotDemo = () => {
             <div className={workareaStyles.workarea}>
                 <div className={workareaStyles.workareaHeader}>
                     <div className={workareaStyles.headerTitle}>
-                        <img
-                            src="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*eco6RrQhxbMAAAAAAAAAAAAADgCCAQ/original"
-                            draggable={false}
-                            alt="logo"
-                            width={20}
-                            height={20}
-                        />
-                        OMI Chatbot
+                        Roseltorg
                     </div>
                     {!copilotOpen && (
                         <div onClick={() => setCopilotOpen(true)} className={workareaStyles.headerButton}>

@@ -1,0 +1,18 @@
+.ant-prompts-content {
+    
+    .ant-prompts-label {
+        .ant-space {
+                flex-direction: column;
+    gap: 7px;
+
+            span {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .ant-prompts-desc {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+}

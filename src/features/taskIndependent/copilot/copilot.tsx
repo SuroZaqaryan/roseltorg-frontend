@@ -1,4 +1,4 @@
-import { Button, Popover, Space, Spin, Typography } from "antd";
+import { Button, Popover, Space, Spin, Typography, theme } from "antd";
 import { Attachments, Bubble, Conversations, Prompts, Sender, Suggestion } from "@ant-design/x";
 import {
     CloseOutlined,
@@ -16,9 +16,11 @@ import type { CopilotProps } from "../types/types";
 import dayjs from "dayjs";
 import { useRef } from "react";
 
+const { useToken } = theme;
 const { Text } = Typography;
 
 export const Copilot = (props: CopilotProps) => {
+    const { token } = useToken();
     const { styles } = useCopilotStyle();
     const abortController = useRef<AbortController>(null);
 
@@ -116,7 +118,9 @@ export const Copilot = (props: CopilotProps) => {
                     items={messages?.map((i) => ({
                         ...i.message,
                         classNames: {
-                            content: i.status === 'loading' ? styles.loadingMessage : '',
+                            content:
+                                (i.message.role === 'assistant' ? styles.assistantContent : styles.userContent) +
+                                (i.status === 'loading' ? ` ${styles.loadingMessage}` : ''),
                         },
                         typing: i.status === 'loading' ? { step: 5, interval: 20, suffix: <>💗</> } : false,
                         avatar: i.message.role === 'assistant' ? { src: 'https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp' } : undefined,
@@ -125,7 +129,7 @@ export const Copilot = (props: CopilotProps) => {
                         assistant: {
                             placement: 'start',
                             header: (
-                                <Text style={{ fontWeight: '500' }}>OMI</Text>
+                                <Text style={{ fontWeight: '500' }}>Roseltorg</Text>
                             ),
                             footer: (
                                 <div style={{ display: 'flex', position: 'relative', top: '-5px' }}>
@@ -149,13 +153,13 @@ export const Copilot = (props: CopilotProps) => {
                 <>
                     <Prompts
                         vertical
-                        title="С чем OMI может помочь: "
+                        title="С чем Roseltorg может помочь: "
                         items={MOCK_QUESTIONS.map((i) => ({ key: i, description: i }))}
                         onItemClick={(info) => handleUserSubmit(info?.data?.description as string)}
                         style={{ marginInline: 16 }}
                         styles={{
                             title: { fontSize: 14 },
-                            item: { background: '#8680b7', color: '#fff', borderRadius: 36 },
+                            item: { background: token.colorPrimary, color: '#fff', borderRadius: 36 },
                         }}
                     />
                 </>

@@ -25,7 +25,7 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
     `,
     workareaHeader: css`
       box-sizing: border-box;
-         background: linear-gradient(90deg, #605b89e8 0%, #605b89bf 100%);
+         background: ${token.colorPrimary};
       border-top-left-radius: 16px;
       height: 52px;
       display: flex;
@@ -36,11 +36,9 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
     `,
     headerTitle: css`
       font-weight: 600;
-      font-size: 15px;
+      font-size: 16px;
+      letter-spacing: 0.4px;
       color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     `,
     headerButton: css`
       background-image: linear-gradient(78deg, #8054f2 7%, #3895da 95%);

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
-import {
-  ReadOutlined,
-  RocketOutlined,
-} from '@ant-design/icons';
+import {Rocket, BookCopy} from 'lucide-react'
 import { Prompts, Welcome } from '@ant-design/x';
 import type { PromptsProps } from '@ant-design/x';
 import FilePreviewTable from '../FilePreviewTable/ui/FilePreviewTable';
@@ -21,7 +18,7 @@ const renderTitle = (icon: React.ReactElement, title: string) => (
 const items: PromptsProps['items'] = [
   {
     key: '1',
-    label: renderTitle(<RocketOutlined style={{ color: '#722ED1' }} />, 'Автогенерация ТЗ'),
+    label: renderTitle(<Rocket />, 'Автогенерация ТЗ'),
     description: 'Создайте техническое задание прямо в чате на основе текста в свободной форме',
     children: [
       {
@@ -36,7 +33,7 @@ const items: PromptsProps['items'] = [
   },
   {
     key: '2',
-    label: renderTitle(<ReadOutlined style={{ color: '#1890FF' }} />, 'Загрузка и изменение ТЗ'),
+    label: renderTitle(<BookCopy  />, 'Загрузка и изменение ТЗ'),
     description: 'Загрузите готовый документ и дополните его новыми данными в чате',
     children: [
       {
@@ -145,8 +142,8 @@ const Prompt = () => {
                   <Welcome
                     variant="borderless"
                     icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
-                    title="Привет! я ваш помощник OMI"
-                    description="OMI поможет вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
+                    title="Привет! Какой у тебя сегодня запрос?"
+                    description="Я помогу вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
                   />
                 </Card>
 
@@ -154,23 +151,29 @@ const Prompt = () => {
                   title="Что вы хотите сделать?"
                   items={items}
                   wrap
-                  className={cl.prompts}
                   styles={{
+                    title: {
+                      color: token.colorPrimary,
+                      marginBottom: '0.8rem'
+                    },
                     list: {
                       width: '100%',
                       gap: 22,
                     },
+                    itemContent: {
+                      gap: 8
+                    },
                     item: {
                       flex: 1,
-                      backgroundImage: `linear-gradient(137deg, #e5f4ff 0%, #efe7ff 100%)`,
-                      border: 0,
+                      background: `#fff`,
+                      border: `1px solid #dedede`,
                       color: '#3e3e3e',
                       borderRadius: 16,
-                      padding: '14px 23px',
+                      padding: '24px',
                     },
                     subItem: {
-                      background: 'rgba(255,255,255,0.45)',
-                      border: '1px solid #FFF',
+                      background: '#fafafa',
+                      border: `1px solid #f0f0f0`,
                       height: '100%'
                     },
                   }}

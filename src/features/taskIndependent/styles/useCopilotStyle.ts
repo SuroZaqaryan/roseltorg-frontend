@@ -43,11 +43,11 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
       flex: 1;
 
       .ant-bubble-content {
-        background: #8680b7;
+        // background: ${token.colorPrimary};
         padding: 18px 20px;
         border-radius: 36px;
         font-size: 15px;
-        color: ${token.colorTextLightSolid};
+        // color: ${token.colorTextLightSolid};
       }
     `,
     chatWelcome: css`
@@ -63,6 +63,13 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
       background-repeat: no-repeat;
       background-position: bottom;
     `,
+      assistantContent: css`
+        background: #1c1c1c !important; 
+        color: ${token.colorTextLightSolid} !important;
+      `,
+      userContent: css`
+        background: ${token.colorBgLayout} !important;
+      `,
     // chatSend 样式
     chatSend: css`
       padding: 12px;
@@ -72,7 +79,7 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
         padding-block: 12px;
         padding-inline-start: 22px;
         padding-inline-end: 14px;
-        background: #8680b7;
+        background: ${token.colorPrimary};
 
         .ant-sender-header-title,
         .ant-btn-icon > span {
@@ -100,7 +107,6 @@ export const useCopilotStyle = createStyles(({ token, css }) => {
       color: ${token.colorText} !important;
     `,
     sendButton: css`
-      background: #6b6691;
       box-shadow: none;
     `,
   };
