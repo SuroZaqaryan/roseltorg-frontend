@@ -236,7 +236,7 @@ export const Copilot = (props: CopilotProps) => {
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                                     <SpeechButton className={styles.speechButton} />
-                                    {loading ? <LoadingButton type="default" /> : <SendButton  className={styles.sendButton} />}
+                                    {loading ? <LoadingButton type="default" /> : <SendButton className={styles.sendButton} />}
                                 </div>
                             );
                         }}
@@ -247,11 +247,18 @@ export const Copilot = (props: CopilotProps) => {
     );
 
     return (
-        <div className={styles.copilotChat} style={{ width: copilotOpen ? 400 : 0 }}>
+        <div
+            className={styles.copilotChat}
+            style={{
+                width: copilotOpen ? 400 : 0,
+                display: copilotOpen ? 'flex' : 'none',
+            }}
+        >
             {chatHeader}
             {chatList}
             {chatSender}
         </div>
+
     );
 };
 

@@ -25,7 +25,7 @@ const CopilotDemo = () => {
                     </div>
                     {!copilotOpen && (
                         <div onClick={() => setCopilotOpen(true)} className={workareaStyles.headerButton}>
-                            ✨ AI Copilot
+                            ✨ Открыть
                         </div>
                     )}
                 </div>

@@ -8,7 +8,7 @@ import { Prompts, Welcome } from '@ant-design/x';
 import type { PromptsProps } from '@ant-design/x';
 import FilePreviewTable from '../FilePreviewTable/ui/FilePreviewTable';
 import { useTaskStore } from '../../../../shared/stores/useCopilot';
-import { App, ConfigProvider, Space, Card, Flex, theme } from 'antd';
+import { App, ConfigProvider, Space, Card, Flex, theme, Skeleton } from 'antd';
 import cl from './prompt.module.scss'
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
@@ -59,12 +59,14 @@ const Prompt = () => {
   const { uploadedFile } = useTaskStore();
 
   const [filePreview, setFilePreview] = useState<any[][] | null>(null);
-
+  const [loadingTable, setLoadingTable] = useState(false);
 
   const previewFile = async () => {
     if (!uploadedFile || typeof uploadedFile !== 'object' || !uploadedFile.url) return;
 
     try {
+      setLoadingTable(true);
+
       const response = await fetch(uploadedFile.url);
       if (!response.ok) {
         throw new Error('Не удалось загрузить файл с сервера');
@@ -79,7 +81,7 @@ const Prompt = () => {
 
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: null }); 
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: null });
 
         setFilePreview(jsonData as any[][]);
       };
@@ -87,6 +89,8 @@ const Prompt = () => {
       reader.readAsBinaryString(blob);
     } catch (error) {
       console.error('Ошибка при обработке файла:', error);
+    } finally {
+      setLoadingTable(false);
     }
   };
 
@@ -123,7 +127,18 @@ const Prompt = () => {
             }}
           >
             {filePreview ?
-              <FilePreviewTable filePreview={filePreview} uploadedFile={uploadedFile}/>
+              <>
+                {
+                  loadingTable ?
+                    <Skeleton
+                      active
+                      title={false}
+                      paragraph={{ rows: 12, width: ['100%', '80%', '90%', '60%'] }}
+                    />
+                    :
+                    <FilePreviewTable filePreview={filePreview} uploadedFile={uploadedFile} />
+                }
+              </>
               :
               <>
                 <Card className={cl.welcomeCard}>
