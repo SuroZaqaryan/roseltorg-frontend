@@ -4,12 +4,11 @@ import { Table, Typography, Flex, Button, message } from "antd";
 
 import { SquarePen, Download } from "lucide-react";
 
-import * as XLSX from "xlsx";
-
 import EditableRow from "./EditableRow";
 import EditableCell from "./EditableCell";
 
 import { handleSaveRow } from "../lib/helpers";
+import { downloadFile } from "../lib/downloadFile";
 
 import type { FileRow, CellValue } from "@features/chat/types/types";
 import type { TaskUploadedFile } from "@stores/useChatStore";
@@ -18,7 +17,6 @@ import cl from "../styles/FilePreviewTable.module.scss";
 
 
 const { Text } = Typography;
-
 
 interface FilePreviewTableProps {
   filePreview: FileRow[];
@@ -72,56 +70,47 @@ const TaskTable: React.FC<FilePreviewTableProps> = ({ filePreview, uploadedFile 
   };
 
   const handleDownload = () => {
-    if (!dataSource.length) return;
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const cleanData = dataSource.map(({ key, ...rest }) => rest);
-    const worksheet = XLSX.utils.json_to_sheet(cleanData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-
-    const fileName = uploadedFile?.name?.replace(/\.[^/.]+$/, '') || 'table';
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    downloadFile(uploadedFile, dataSource);
   };
 
   return (
-      <Table
-          columns={defaultColumns}
-          dataSource={dataSource}
-          className={cl.table}
-          bordered
-          pagination={false}
-          components={components}
-          title={() => (
-              <Flex align="center" justify="space-between">
-                <Text style={{ fontWeight: 500 }}>{uploadedFile?.name}</Text>
-                <Flex align="center" gap={16}>
-                  {editing ? (
-                      <Button
-                          type="primary"
-                          shape="round"
-                          style={{ lineHeight: 1, background: '#389e0d', boxShadow: 'none' }}
-                          onClick={saveChanges}
-                      >
-                        Сохранить
-                      </Button>
-                  ) : (
-                      <Flex
-                          onClick={() => setEditing(!editing)}
-                          style={{ cursor: 'pointer' }}
-                          title="Редактировать"
-                      >
-                        <SquarePen size={18} color="gray" />
-                      </Flex>
-                  )}
-
-                  <Flex onClick={handleDownload} style={{ cursor: 'pointer' }} title="Скачать">
-                    <Download size={18} color="gray" />
-                  </Flex>
-                </Flex>
+    <Table
+      columns={defaultColumns}
+      dataSource={dataSource}
+      className={cl.table}
+      bordered
+      pagination={false}
+      components={components}
+      title={() => (
+        <Flex align="center" justify="space-between">
+          <Text style={{ fontWeight: 500 }}>{uploadedFile?.name}</Text>
+          <Flex align="center" gap={16}>
+            {editing ? (
+              <Button
+                type="primary"
+                shape="round"
+                style={{ lineHeight: 1, background: '#389e0d', boxShadow: 'none' }}
+                onClick={saveChanges}
+              >
+                Сохранить
+              </Button>
+            ) : (
+              <Flex
+                onClick={() => setEditing(!editing)}
+                style={{ cursor: 'pointer' }}
+                title="Редактировать"
+              >
+                <SquarePen size={18} color="gray" />
               </Flex>
-          )}
-      />
+            )}
+
+            <Flex onClick={handleDownload} style={{ cursor: 'pointer' }} title="Скачать">
+              <Download size={18} color="gray" />
+            </Flex>
+          </Flex>
+        </Flex>
+      )}
+    />
   );
 };
 
