@@ -2,7 +2,7 @@ import { createStyles } from 'antd-style';
 
 export const useChatSidebarStyle = createStyles(({ token, css }) => {
   return {
-    copilotChat: css`
+    chat: css`
       display: flex;
       flex-direction: column;
       background: ${token.colorBgContainer};

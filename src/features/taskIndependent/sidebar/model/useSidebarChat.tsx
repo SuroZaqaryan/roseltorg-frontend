@@ -17,7 +17,7 @@ import {
 const AGENT_PLACEHOLDER = 'Generating content, please wait...';
 
 export const useSidebarChat = (props: CopilotProps) => {
-    const { copilotOpen, setCopilotOpen } = props;
+    const { openSidebar, setOpenSidebar } = props;
     const attachmentsRef = useRef<GetRef<typeof Attachments>>(null);
     const abortController = useRef<AbortController>(null);
 
@@ -148,7 +148,7 @@ export const useSidebarChat = (props: CopilotProps) => {
 
     return {
         state: {
-            copilotOpen,
+            openSidebar,
             messageHistory,
             sessionList,
             curSession,
@@ -160,7 +160,7 @@ export const useSidebarChat = (props: CopilotProps) => {
             attachmentsRef,
         },
         actions: {
-            setCopilotOpen,
+            setOpenSidebar,
             setSessionList,
             setCurSession,
             setAttachmentsOpen,

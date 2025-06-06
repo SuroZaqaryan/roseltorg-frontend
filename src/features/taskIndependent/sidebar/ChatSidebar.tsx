@@ -26,7 +26,7 @@ export const ChatSidebar = (props: CopilotProps) => {
 
     const {
         state: {
-            copilotOpen,
+            openSidebar,
             sessionList,
             curSession,
             attachmentsOpen,
@@ -38,7 +38,7 @@ export const ChatSidebar = (props: CopilotProps) => {
             attachmentsRef,
         },
         actions: {
-            setCopilotOpen,
+            setOpenSidebar,
             setSessionList,
             setCurSession,
             setAttachmentsOpen,
@@ -103,7 +103,7 @@ export const ChatSidebar = (props: CopilotProps) => {
                 <Button
                     type="text"
                     icon={<CloseOutlined />}
-                    onClick={() => setCopilotOpen(false)}
+                    onClick={() => setOpenSidebar(false)}
                     className={styles.headerButton}
                 />
             </Space>
@@ -252,10 +252,10 @@ export const ChatSidebar = (props: CopilotProps) => {
 
     return (
         <div
-            className={styles.copilotChat}
+            className={styles.chat}
             style={{
-                width: copilotOpen ? 400 : 0,
-                display: copilotOpen ? 'flex' : 'none',
+                width: openSidebar ? 400 : 0,
+                display: openSidebar ? 'flex' : 'none',
             }}
         >
             {chatHeader}

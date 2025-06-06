@@ -6,10 +6,10 @@ import EntryPanel from './workarea/EntryPanel/ui/EntryPanel.tsx';
 const ChatBox = () => {
     const { styles: workareaStyles } = useChatBoxStyle();
 
-    const [copilotOpen, setCopilotOpen] = useState(true);
+    const [openSidebar, setOpenSidebar] = useState(true);
 
     return (
-        <div className={workareaStyles.copilotWrapper}>
+        <div className={workareaStyles.wrapper}>
             {/** Левая рабочая зона */}
             <div className={workareaStyles.workarea}>
                 <div className={workareaStyles.workareaHeader}>
@@ -17,8 +17,8 @@ const ChatBox = () => {
                         Roseltorg
                     </div>
 
-                    {!copilotOpen && (
-                        <div onClick={() => setCopilotOpen(true)} className={workareaStyles.headerButton}>
+                    {!openSidebar && (
+                        <div onClick={() => setOpenSidebar(true)} className={workareaStyles.headerButton}>
                             ✨ Открыть
                         </div>
                     )}
@@ -32,7 +32,7 @@ const ChatBox = () => {
             </div>
 
             {/** Правая диалоговая область */}
-            <ChatSidebar copilotOpen={copilotOpen} setCopilotOpen={setCopilotOpen} />
+            <ChatSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
         </div>
     );
 };

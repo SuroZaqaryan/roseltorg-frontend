@@ -2,7 +2,7 @@ import { createStyles } from 'antd-style';
 
 export const useChatBoxStyle = createStyles(({ token, css }) => {
   return {
-    copilotWrapper: css`
+    wrapper: css`
         display: flex;
         height: 100%;
         position: relative;

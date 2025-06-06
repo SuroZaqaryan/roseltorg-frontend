@@ -5,6 +5,6 @@ export type BubbleDataType = {
 };
 
 export interface CopilotProps {
-  copilotOpen: boolean;
-  setCopilotOpen: (open: boolean) => void;
+  openSidebar: boolean;
+  setOpenSidebar: (open: boolean) => void;
 }
