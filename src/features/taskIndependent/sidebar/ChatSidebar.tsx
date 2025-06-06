@@ -12,14 +12,14 @@ import {
 import { useChatSidebarStyle } from "./styles/useChatSidebarStyle.ts";
 import { useSidebarChat } from "./model/useSidebarChat.tsx";
 import { MOCK_QUESTIONS, MOCK_SUGGESTIONS } from "./mocks/mocks";
-import type { CopilotProps } from "../types/types";
+import type { SidebarChatProps } from "../types/types";
 import dayjs from "dayjs";
 import { useRef } from "react";
 
 const { useToken } = theme;
 const { Text } = Typography;
 
-export const ChatSidebar = (props: CopilotProps) => {
+export const ChatSidebar = (props: SidebarChatProps) => {
     const { token } = useToken();
     const { styles } = useChatSidebarStyle();
     const abortController = useRef<AbortController>(null);

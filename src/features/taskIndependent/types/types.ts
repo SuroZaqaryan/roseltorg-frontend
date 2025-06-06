@@ -4,7 +4,7 @@ export type BubbleDataType = {
     files?: any[];
 };
 
-export interface CopilotProps {
+export interface SidebarChatProps {
   openSidebar: boolean;
   setOpenSidebar: (open: boolean) => void;
 }
