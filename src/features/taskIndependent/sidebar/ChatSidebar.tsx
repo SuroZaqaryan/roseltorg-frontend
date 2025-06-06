@@ -9,9 +9,9 @@ import {
     PlusOutlined,
     ReloadOutlined
 } from "@ant-design/icons";
-import { useCopilotStyle } from "../styles/useCopilotStyle";
-import { useCopilotLogic } from "./useCopilotLogic";
-import { MOCK_QUESTIONS, MOCK_SUGGESTIONS } from "../mocks/mocks";
+import { useChatSidebarStyle } from "./styles/useChatSidebarStyle.ts";
+import { useSidebarChat } from "./model/useSidebarChat.tsx";
+import { MOCK_QUESTIONS, MOCK_SUGGESTIONS } from "./mocks/mocks";
 import type { CopilotProps } from "../types/types";
 import dayjs from "dayjs";
 import { useRef } from "react";
@@ -19,9 +19,9 @@ import { useRef } from "react";
 const { useToken } = theme;
 const { Text } = Typography;
 
-export const Copilot = (props: CopilotProps) => {
+export const ChatSidebar = (props: CopilotProps) => {
     const { token } = useToken();
-    const { styles } = useCopilotStyle();
+    const { styles } = useChatSidebarStyle();
     const abortController = useRef<AbortController>(null);
 
     const {
@@ -49,7 +49,7 @@ export const Copilot = (props: CopilotProps) => {
             setMessages,
         },
         constants: { AGENT_PLACEHOLDER },
-    } = useCopilotLogic(props);
+    } = useSidebarChat(props);
 
     const chatHeader = (
         <div className={styles.chatHeader}>
@@ -266,4 +266,4 @@ export const Copilot = (props: CopilotProps) => {
     );
 };
 
-export default Copilot;
+export default ChatSidebar;

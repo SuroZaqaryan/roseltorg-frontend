@@ -1,6 +1,6 @@
 import { createStyles } from 'antd-style';
 
-export const useCopilotStyle = createStyles(({ token, css }) => {
+export const useChatSidebarStyle = createStyles(({ token, css }) => {
   return {
     copilotChat: css`
       display: flex;

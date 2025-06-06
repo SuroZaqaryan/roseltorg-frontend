@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { MOCK_SESSION_LIST } from "../mocks/mocks";
-import type { BubbleDataType, CopilotProps } from "../types/types";
+import { MOCK_SESSION_LIST } from "../mocks/mocks.tsx";
+import type { BubbleDataType, CopilotProps } from "../../types/types.ts";
 import type { Conversation } from "@ant-design/x/es/conversations";
 import type { GetProp, GetRef } from "antd";
 import { Flex } from "antd";
-import { useTaskStore } from "../../../shared/stores/useCopilot";
-import cl from './styles/useCopilotLogic.module.scss'
+import { useTaskStore } from "../../../../shared/stores/useCopilot.ts";
 
 import {
     Attachments,
@@ -17,7 +16,7 @@ import {
 
 const AGENT_PLACEHOLDER = 'Generating content, please wait...';
 
-export const useCopilotLogic = (props: CopilotProps) => {
+export const useSidebarChat = (props: CopilotProps) => {
     const { copilotOpen, setCopilotOpen } = props;
     const attachmentsRef = useRef<GetRef<typeof Attachments>>(null);
     const abortController = useRef<AbortController>(null);
@@ -28,6 +27,8 @@ export const useCopilotLogic = (props: CopilotProps) => {
     const [attachmentsOpen, setAttachmentsOpen] = useState(false);
     const [files, setFiles] = useState<GetProp<AttachmentsProps, 'items'>>([]);
     const [inputValue, setInputValue] = useState('');
+
+    console.log('messageHistory', messageHistory)
 
     const { setUploadedFile } = useTaskStore();
 
@@ -108,7 +109,6 @@ export const useCopilotLogic = (props: CopilotProps) => {
                                         <Attachments.FileCard
                                             key={item.uid}
                                             item={item}
-                                            className={cl.FileCard}
                                             style={{ borderRadius: 18, border: '1px solid #dbdbdb' }}
                                         />
                                     ))}

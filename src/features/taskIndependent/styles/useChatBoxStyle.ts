@@ -1,6 +1,6 @@
 import { createStyles } from 'antd-style';
 
-export const useWorkareaStyle = createStyles(({ token, css }) => {
+export const useChatBoxStyle = createStyles(({ token, css }) => {
   return {
     copilotWrapper: css`
         display: flex;
@@ -8,7 +8,7 @@ export const useWorkareaStyle = createStyles(({ token, css }) => {
         position: relative;
         left: 50%;
         transform: translateX(-50%);
-       box-shadow: 0px 8px 15px 0px rgb(0 0 0 / 5%);
+       box-shadow: 0 8px 15px 0 rgb(0 0 0 / 5%);
     border-radius: 16px;
         `,
 
