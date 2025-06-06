@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Typography, Flex, Button, message } from 'antd';
 import EditableRow from './EditableRow';
 import EditableCell from './EditableCell';
+import type { FileRow, CellValue } from 'features/taskIndependent/types/types';
 import { SquarePen, Download } from 'lucide-react';
 import { handleSaveRow } from '../lib/helpers';
 import type { TaskUploadedFile } from '../../../../../shared/stores/useChatStore';
@@ -10,8 +11,6 @@ import * as XLSX from 'xlsx';
 
 const { Text } = Typography;
 
-type CellValue = string | number | boolean | null | undefined;
-type FileRow = Record<string, CellValue>;
 
 interface FilePreviewTableProps {
   filePreview: FileRow[];

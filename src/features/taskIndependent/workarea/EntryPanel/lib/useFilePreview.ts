@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { useChatStore } from '../../../../../shared/stores/useChatStore.ts';
+import type { FileRow } from 'features/taskIndependent/types/types';
 
 export const useFilePreview = () => {
     const { uploadedFile } = useChatStore();
-    const [filePreview, setFilePreview] = useState<any[][] | null>(null);
+    const [filePreview, setFilePreview] = useState<FileRow[] | null>(null);
     const [loadingTable, setLoadingTable] = useState(false);
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export const useFilePreview = () => {
                     const workbook = XLSX.read(e.target?.result, { type: 'binary' });
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const data = XLSX.utils.sheet_to_json(sheet, { defval: null });
-                    setFilePreview(data as any[][]);
+                    setFilePreview(data as FileRow[]);
                 };
                 reader.readAsBinaryString(blob);
             } catch (e) {
