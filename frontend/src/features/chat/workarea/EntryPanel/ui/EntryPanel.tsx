@@ -14,19 +14,19 @@ import cl from "../styles/entryPanel.module.scss";
 const EntryPanel = () => {
   const { token } = theme.useToken();
   const { message } = App.useApp();
-  const { uploadedFile } = useChatStore();
-  const { filePreview, loadingTable } = useFilePreview();
+  // const { uploadedFile } = useChatStore();
+  const { content, loading } = useFilePreview();
 
   return (
       <ConfigProvider theme={{ algorithm: theme.defaultAlgorithm }}>
         <div style={{ width: '100%', height: '100%' }}>
-          <Flex justify="center" className={cl.promptContainer} style={{ borderRadius: filePreview ? undefined : '16px', border: filePreview ? undefined : `1px solid ${token.colorBorder}` }}>
-            <Flex vertical gap={44} className={cl.promptContent} style={{ maxWidth: filePreview ? undefined : 1000, padding: filePreview ? 0 : 32 }}>
-              {filePreview ? (
-                  loadingTable ? (
+          <Flex justify="center" className={cl.promptContainer} style={{ borderRadius: content ? undefined : '16px', border: content ? undefined : `1px solid ${token.colorBorder}` }}>
+            <Flex vertical gap={44} className={cl.promptContent} style={{ maxWidth: content ? undefined : 1000, padding: content ? 0 : 32 }}>
+              {content ? (
+                  loading ? (
                       <Skeleton active title={false} paragraph={{ rows: 12, width: ['100%', '80%', '90%', '60%'] }} />
                   ) : (
-                      <TaskTable filePreview={filePreview} uploadedFile={uploadedFile} />
+                      <TaskTable  />
                   )
               ) : (
                   <>

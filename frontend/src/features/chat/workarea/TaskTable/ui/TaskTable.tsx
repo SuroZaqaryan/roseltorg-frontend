@@ -1,116 +1,37 @@
-import React, { useEffect, useState } from "react";
+import { Typography, Spin, Flex, Button } from "antd";
+import { Download } from "lucide-react";
 
-import { Table, Typography, Flex, Button, message } from "antd";
+import { useFilePreview } from "../../EntryPanel/lib/useFilePreview";
+import { useChatStore } from "@stores/useChatStore";
 
-import { SquarePen, Download } from "lucide-react";
+const { Text, Paragraph } = Typography;
 
-import EditableRow from "./EditableRow";
-import EditableCell from "./EditableCell";
+const TaskTable = () => {
+  const { uploadedFile } = useChatStore();
+  const { content, loading } = useFilePreview();
 
-import { handleSaveRow } from "../lib/helpers";
-import { downloadFile } from "../lib/downloadFile";
-
-import type { FileRow, CellValue } from "@features/chat/types/types";
-import type { TaskUploadedFile } from "@stores/useChatStore";
-
-import cl from "../styles/FilePreviewTable.module.scss";
-
-
-const { Text } = Typography;
-
-interface FilePreviewTableProps {
-  filePreview: FileRow[];
-  uploadedFile: TaskUploadedFile | null;
-}
-
-const TaskTable: React.FC<FilePreviewTableProps> = ({ filePreview, uploadedFile }) => {
-  const [editing, setEditing] = useState(false);
-  const [dataSource, setDataSource] = useState<FileRow[]>([]);
-
-  useEffect(() => {
-    if (filePreview?.length) {
-      setDataSource(filePreview.map((row, index) => ({ ...row, key: index.toString() })));
-    }
-  }, [filePreview]);
-
-  if (!filePreview?.length) return null;
-
-  const headers = Object.keys(filePreview[0] || {});
-  const handleSave = handleSaveRow(dataSource, setDataSource);
-
-  const defaultColumns = headers.map((header) => ({
-    title: header,
-    dataIndex: header,
-    key: header,
-    ellipsis: true,
-    render: (text: CellValue) => {
-      if (text == null) return '-';
-      if (typeof text === 'boolean') return text.toString();
-      return text;
-    },
-    onCell: (record: FileRow) => ({
-      record,
-      editable: editing,
-      dataIndex: header,
-      title: header,
-      handleSave,
-    }),
-  }));
-
-  const components = {
-    body: {
-      row: EditableRow,
-      cell: EditableCell,
-    },
-  };
-
-  const saveChanges = () => {
-    setEditing(!editing);
-    message.success(`Файл успешно сохранён`);
-  };
-
-  const handleDownload = () => {
-    downloadFile(uploadedFile, dataSource);
-  };
+  console.log('uploadedFile', uploadedFile)
+  if (!uploadedFile) return null;
 
   return (
-    <Table
-      columns={defaultColumns}
-      dataSource={dataSource}
-      className={cl.table}
-      bordered
-      pagination={false}
-      components={components}
-      title={() => (
-        <Flex align="center" justify="space-between">
-          <Text style={{ fontWeight: 500 }}>{uploadedFile?.name}</Text>
-          <Flex align="center" gap={16}>
-            {editing ? (
-              <Button
-                type="primary"
-                shape="round"
-                style={{ lineHeight: 1, background: '#389e0d', boxShadow: 'none' }}
-                onClick={saveChanges}
-              >
-                Сохранить
-              </Button>
-            ) : (
-              <Flex
-                onClick={() => setEditing(!editing)}
-                style={{ cursor: 'pointer' }}
-                title="Редактировать"
-              >
-                <SquarePen size={18} color="gray" />
-              </Flex>
-            )}
+    <div style={{ padding: 16 }}>
+      <Flex justify="space-between" align="center" style={{ marginBottom: 12 }}>
+        <Text strong>{uploadedFile.name}</Text>
+        <Button icon={<Download size={16} />}>
+          Скачать
+        </Button>
+      </Flex>
 
-            <Flex onClick={handleDownload} style={{ cursor: 'pointer' }} title="Скачать">
-              <Download size={18} color="gray" />
-            </Flex>
-          </Flex>
-        </Flex>
+      {loading ? (
+        <Spin />
+      ) : (
+     <div
+    style={{ whiteSpace: "pre-wrap" }}
+    dangerouslySetInnerHTML={{ __html: content || "" }}
+  />
+
       )}
-    />
+    </div>
   );
 };
 

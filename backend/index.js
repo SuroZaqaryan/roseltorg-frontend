@@ -67,17 +67,17 @@ app.post('/api/conversation', upload.single('file'), (req, res) => {
         });
     }
 
-    if (file) {
-        // Декодируем имя файла для корректного отображения
-        const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
-        const fileUrl = `http://localhost:${PORT}/uploads/${encodeURIComponent(file.originalname)}`;
-        
-        files.push({
-            name: decodedName, // Используем декодированное имя
-            type: file.mimetype,
-            url: fileUrl
-        });
-    }
+  if (file) {
+    const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const fileUrl = `http://localhost:${PORT}/uploads/${encodeURIComponent(decodedName)}`;
+
+    files.push({
+        name: decodedName,
+        type: file.mimetype,
+        url: fileUrl
+    });
+}
+
 
     res.json({
         content: 'Файл получен и загружен (если был передан).',
