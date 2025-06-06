@@ -12,7 +12,7 @@ interface TaskStore {
   setUploadedFile: (file: TaskUploadedFile | null) => void;
 }
 
-export const useTaskStore = create<TaskStore>()(
+export const useChatStore = create<TaskStore>()(
   devtools((set) => ({
     uploadedFile: null,
     setUploadedFile: (file) => set({ uploadedFile: file }, false, 'setUploadedFile'),

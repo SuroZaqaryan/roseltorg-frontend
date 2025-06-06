@@ -3,13 +3,13 @@ import { App, Card, ConfigProvider, Flex, Skeleton, theme } from 'antd';
 import { getPromptItems } from '../lib/getPromptItems';
 import { useFilePreview } from '../lib/useFilePreview';
 import TaskTable from '../../TaskTable/ui/TaskTable.tsx';
-import { useTaskStore } from '../../../../../shared/stores/useCopilot.ts';
+import { useChatStore } from '../../../../../shared/stores/useChatStore.ts';
 import cl from '../styles/entryPanel.module.scss';
 
 const EntryPanel = () => {
   const { token } = theme.useToken();
   const { message } = App.useApp();
-  const { uploadedFile } = useTaskStore();
+  const { uploadedFile } = useChatStore();
   const { filePreview, loadingTable } = useFilePreview();
 
   return (

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
-import { useTaskStore } from '../../../../../shared/stores/useCopilot.ts';
+import { useChatStore } from '../../../../../shared/stores/useChatStore.ts';
 
 export const useFilePreview = () => {
-    const { uploadedFile } = useTaskStore();
+    const { uploadedFile } = useChatStore();
     const [filePreview, setFilePreview] = useState<any[][] | null>(null);
     const [loadingTable, setLoadingTable] = useState(false);
 

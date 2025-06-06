@@ -4,7 +4,7 @@ import EditableRow from './EditableRow';
 import EditableCell from './EditableCell';
 import { SquarePen, Download } from 'lucide-react';
 import { handleSaveRow } from '../lib/helpers';
-import type { TaskUploadedFile } from '../../../../../shared/stores/useCopilot';
+import type { TaskUploadedFile } from '../../../../../shared/stores/useChatStore';
 import cl from '../styles/FilePreviewTable.module.scss';
 import * as XLSX from 'xlsx';
 

@@ -5,7 +5,7 @@ import type { BubbleDataType, CopilotProps } from "../../types/types.ts";
 import type { Conversation } from "@ant-design/x/es/conversations";
 import type { GetProp, GetRef } from "antd";
 import { Flex } from "antd";
-import { useTaskStore } from "../../../../shared/stores/useCopilot.ts";
+import { useChatStore } from "../../../../shared/stores/useChatStore.ts";
 
 import {
     Attachments,
@@ -30,7 +30,7 @@ export const useSidebarChat = (props: CopilotProps) => {
 
     console.log('messageHistory', messageHistory)
 
-    const { setUploadedFile } = useTaskStore();
+    const { setUploadedFile } = useChatStore();
 
     const [agent] = useXAgent<BubbleDataType>({
         request: async ({ message, model, signal }, { onSuccess }) => {
