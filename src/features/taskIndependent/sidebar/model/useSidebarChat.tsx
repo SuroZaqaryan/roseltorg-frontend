@@ -28,8 +28,6 @@ export const useSidebarChat = (props: SidebarChatProps) => {
     const [files, setFiles] = useState<GetProp<AttachmentsProps, 'items'>>([]);
     const [inputValue, setInputValue] = useState('');
 
-    console.log('messageHistory', messageHistory)
-
     const { setUploadedFile } = useChatStore();
 
     const [agent] = useXAgent<BubbleDataType>({

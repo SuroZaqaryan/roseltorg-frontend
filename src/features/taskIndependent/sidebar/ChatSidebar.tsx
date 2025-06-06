@@ -1,4 +1,4 @@
-import { Button, Popover, Space, Spin, Typography, theme } from "antd";
+import { message, Button, Popover, Space, Spin, Typography, theme } from "antd";
 import { Attachments, Bubble, Conversations, Prompts, Sender, Suggestion } from "@ant-design/x";
 import {
     CloseOutlined,
@@ -22,6 +22,7 @@ const { Text } = Typography;
 export const ChatSidebar = (props: SidebarChatProps) => {
     const { token } = useToken();
     const { styles } = useChatSidebarStyle();
+    
     const abortController = useRef<AbortController>(null);
 
     const {
@@ -131,10 +132,25 @@ export const ChatSidebar = (props: SidebarChatProps) => {
                             header: (
                                 <Text style={{ fontWeight: '500' }}>Roseltorg</Text>
                             ),
-                            footer: (
+                            footer: (messageProps) => (
                                 <div style={{ display: 'flex', position: 'relative', top: '-5px' }}>
                                     <Button type="text" size="small" icon={<ReloadOutlined />} />
-                                    <Button type="text" size="small" icon={<CopyOutlined />} />
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<CopyOutlined />}
+                                        onClick={() => {
+                                            if (messageProps) {
+                                                navigator.clipboard.writeText(messageProps)
+                                                    .then(() => {
+                                                        message.success('Текст скопирован в буфер обмена');
+                                                    })
+                                                    .catch(() => {
+                                                        message.error('Не удалось скопировать текст');
+                                                    });
+                                            }
+                                        }}
+                                    />
                                 </div>
                             ),
                             loadingRender: () => (
