@@ -18,7 +18,6 @@ export const useFilePreview = () => {
             try {
                 setLoading(true);
 
-                // Кодируем URL (если вдруг сервер отдаёт неэкранированное имя)
                 const fileUrl = uploadedFile.url;
 
                 const res = await fetch(fileUrl);
@@ -28,15 +27,41 @@ export const useFilePreview = () => {
                 const extension = uploadedFile.name?.split(".").pop()?.toLowerCase();
 
                 if (extension === "xlsx" || extension === "xls") {
+                    const csvToTable = (csv: string) => {
+                        const rows = csv.trim().split("\n").map(row => row.split(","));
+                        return `
+    <table style="
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    ">
+      <thead>
+        <tr>
+          ${rows[0].map(cell => `<th style="padding: 8px; border: 1px solid #ddd;">${cell}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.slice(1).map(
+                            row => `<tr style="border-bottom: 1px solid #ddd;">
+            ${row.map(cell => `<td style="padding: 8px; border: 1px solid #ddd;">${cell}</td>`).join('')}
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+                    };
+
+
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         const workbook = XLSX.read(e.target?.result, { type: "binary" });
                         const sheet = workbook.Sheets[workbook.SheetNames[0]];
                         const rawData = XLSX.utils.sheet_to_csv(sheet, { blankrows: false });
-                        setContent(rawData);
+                        const htmlTable = csvToTable(rawData);
+                        setContent(htmlTable);
                     };
                     reader.readAsBinaryString(blob);
                 }
+
                 else if (extension === "docx") {
                     const reader = new FileReader();
                     reader.onload = async (e) => {
