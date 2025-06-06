@@ -189,7 +189,7 @@ export const ChatSidebar = (props: SidebarChatProps) => {
 
     const sendHeader = (
         <Sender.Header
-            title="XLS, DOCX, PDF"
+            title="XLSX, DOC, DOCX"
             styles={{ content: { padding: 0 } }}
             open={attachmentsOpen}
             onOpenChange={setAttachmentsOpen}
