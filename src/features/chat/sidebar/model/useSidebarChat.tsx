@@ -1,18 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { MOCK_SESSION_LIST } from "../mocks/mocks.tsx";
-import type { BubbleDataType, SidebarChatProps } from "../../types/types.ts";
-import type { Conversation } from "@ant-design/x/es/conversations";
-import type { GetProp, GetRef } from "antd";
+
 import { Flex } from "antd";
-import { useChatStore } from "../../../../shared/stores/useChatStore.ts";
 
 import {
     Attachments,
     type AttachmentsProps,
     useXAgent,
     useXChat,
-} from '@ant-design/x';
+} from "@ant-design/x";
+import type { Conversation } from "@ant-design/x/es/conversations";
+
+import { useChatStore } from "@stores/useChatStore.ts";
+
+import type { GetProp, GetRef } from "antd";
+import type { BubbleDataType, SidebarChatProps } from "../../types/types.ts";
+
+import { MOCK_SESSION_LIST } from "../mocks/mocks.tsx";
+
 
 const AGENT_PLACEHOLDER = 'Generating content, please wait...';
 

@@ -25,10 +25,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@features': path.resolve(__dirname, 'src/features'),
+      '@shared': path.resolve(__dirname, 'src/shared'),
       '@pages': path.resolve(__dirname, 'src/pages'),
-      '@types': path.resolve(__dirname, 'src/types'),
-      '@components': path.resolve(__dirname, 'src/components'),
-      '@stores': path.resolve(__dirname, 'src/stores'),
+      '@theme': path.resolve(__dirname, 'src/theme'),
+      '@stores': path.resolve(__dirname, 'src/shared/stores'),
+      '@types': path.resolve(__dirname, 'src/shared/types'),
     }
   },
   css: {

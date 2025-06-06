@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex } from 'antd';
-import ChatBox from '../features/taskIndependent/ChatBox.tsx';
+import ChatBox from '@features/chat/ChatBox.tsx';
 
 const HomePage: React.FC = () => {
     return (

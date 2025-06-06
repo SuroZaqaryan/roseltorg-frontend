@@ -1,5 +1,7 @@
+import { useRef } from "react";
+import dayjs from "dayjs";
+
 import { message, Button, Popover, Space, Spin, Typography, theme } from "antd";
-import { Attachments, Bubble, Conversations, Prompts, Sender, Suggestion } from "@ant-design/x";
 import {
     CloseOutlined,
     CloudUploadOutlined,
@@ -9,12 +11,14 @@ import {
     PlusOutlined,
     ReloadOutlined
 } from "@ant-design/icons";
-import { useChatSidebarStyle } from "./styles/useChatSidebarStyle.ts";
-import { useSidebarChat } from "./model/useSidebarChat.tsx";
-import { MOCK_QUESTIONS, MOCK_SUGGESTIONS } from "./mocks/mocks";
+import { Attachments, Bubble, Conversations, Prompts, Sender, Suggestion } from "@ant-design/x";
+
 import type { SidebarChatProps } from "../types/types";
-import dayjs from "dayjs";
-import { useRef } from "react";
+
+import { MOCK_QUESTIONS, MOCK_SUGGESTIONS } from "./mocks/mocks";
+import { useSidebarChat } from "./model/useSidebarChat.tsx";
+import { useChatSidebarStyle } from "./styles/useChatSidebarStyle.ts";
+
 
 const { useToken } = theme;
 const { Text } = Typography;

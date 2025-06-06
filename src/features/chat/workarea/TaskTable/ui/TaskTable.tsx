@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Typography, Flex, Button, message } from 'antd';
-import EditableRow from './EditableRow';
-import EditableCell from './EditableCell';
-import type { FileRow, CellValue } from 'features/taskIndependent/types/types';
-import { SquarePen, Download } from 'lucide-react';
-import { handleSaveRow } from '../lib/helpers';
-import type { TaskUploadedFile } from '../../../../../shared/stores/useChatStore';
-import cl from '../styles/FilePreviewTable.module.scss';
-import * as XLSX from 'xlsx';
+import React, { useEffect, useState } from "react";
+
+import { Table, Typography, Flex, Button, message } from "antd";
+
+import { SquarePen, Download } from "lucide-react";
+
+import * as XLSX from "xlsx";
+
+import EditableRow from "./EditableRow";
+import EditableCell from "./EditableCell";
+
+import { handleSaveRow } from "../lib/helpers";
+
+import type { FileRow, CellValue } from "@features/chat/types/types";
+import type { TaskUploadedFile } from "@stores/useChatStore";
+
+import cl from "../styles/FilePreviewTable.module.scss";
+
 
 const { Text } = Typography;
 

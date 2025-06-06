@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react';
-import * as XLSX from 'xlsx';
-import { useChatStore } from '../../../../../shared/stores/useChatStore.ts';
-import type { FileRow } from 'features/taskIndependent/types/types';
+import { useEffect, useState } from "react";
+
+import * as XLSX from "xlsx";
+
+import { useChatStore } from "@stores/useChatStore.ts";
+
+import type { FileRow } from "@features/chat/types/types";
+
 
 export const useFilePreview = () => {
     const { uploadedFile } = useChatStore();

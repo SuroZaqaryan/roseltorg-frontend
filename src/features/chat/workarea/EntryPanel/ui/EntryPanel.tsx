@@ -1,10 +1,15 @@
-import { Welcome, Prompts } from '@ant-design/x';
-import { App, Card, ConfigProvider, Flex, Skeleton, theme } from 'antd';
-import { getPromptItems } from '../lib/getPromptItems';
-import { useFilePreview } from '../lib/useFilePreview';
-import TaskTable from '../../TaskTable/ui/TaskTable.tsx';
-import { useChatStore } from '../../../../../shared/stores/useChatStore.ts';
-import cl from '../styles/entryPanel.module.scss';
+import { App, Card, ConfigProvider, Flex, Skeleton, theme } from "antd";
+import { Welcome, Prompts } from "@ant-design/x";
+
+import { useChatStore } from "@stores/useChatStore";
+
+import TaskTable from "../../TaskTable/ui/TaskTable.tsx";
+
+import { getPromptItems } from "../lib/getPromptItems";
+import { useFilePreview } from "../lib/useFilePreview";
+
+import cl from "../styles/entryPanel.module.scss";
+
 
 const EntryPanel = () => {
   const { token } = theme.useToken();

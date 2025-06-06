@@ -1,7 +1,11 @@
-import { Rocket, BookCopy } from 'lucide-react';
-import type { PromptsProps } from '@ant-design/x';
-import React from 'react';
-import { Space } from 'antd';
+import React from "react";
+
+import { Space } from "antd";
+
+import { Rocket, BookCopy } from "lucide-react";
+
+import type { PromptsProps } from "@ant-design/x";
+
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
     <Space align="start">
