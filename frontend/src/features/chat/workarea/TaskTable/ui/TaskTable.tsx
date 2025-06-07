@@ -42,18 +42,11 @@ const TaskTable = () => {
         <Spin />
       ) : (
         <div
-          className={cl.tableView}
+          className={cl.contentView}
           ref={contentRef}
           contentEditable
           suppressContentEditableWarning
           onInput={handleInput}
-          style={{
-            whiteSpace: "pre-wrap",
-            border: "1px solid #ccc",
-            padding: 12,
-            minHeight: 300,
-            outline: "none"
-          }}
         />
       )}
     </div>

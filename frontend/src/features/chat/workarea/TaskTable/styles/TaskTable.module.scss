@@ -1,21 +1,26 @@
-.tableView {
+.contentView {
+    outline: none;
     table {
         width: 100%;
         border-collapse: collapse;
-        font-family: Arial, sans-serif;
+
+        thead th,
+        tbody td {
+            padding: 14px;
+            border: 1px solid #ddd;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f296;
+        }
     }
 
-    thead th,
-    tbody td {
-        padding: 8px;
-        border: 1px solid #ddd;
-    }
-
-    tbody tr {
-        border-bottom: 1px solid #ddd;
-    }
-
-    img {
-        max-width: 100%;
-    }
 }
