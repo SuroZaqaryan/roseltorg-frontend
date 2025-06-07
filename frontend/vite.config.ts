@@ -7,9 +7,12 @@ import path from 'path';
 export default defineConfig({
   publicDir: 'public',
   plugins: [react(), tsconfigPaths()],
+  optimizeDeps: {
+    include: ['pdfjs-dist'],
+  },
   server: {
     port: 3000,
-    open: true, 
+    open: true,
   },
   build: {
     assetsDir: 'static',

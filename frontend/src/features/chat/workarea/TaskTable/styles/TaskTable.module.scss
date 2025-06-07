@@ -1,0 +1,21 @@
+.tableView {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    thead th,
+    tbody td {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    img {
+        max-width: 100%;
+    }
+}

@@ -3,14 +3,14 @@ import { Download } from "lucide-react";
 
 import { useFilePreview } from "../../EntryPanel/lib/useFilePreview";
 import { useChatStore } from "@stores/useChatStore";
+import cl from '../styles/TaskTable.module.scss';
 
-const { Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 const TaskTable = () => {
   const { uploadedFile } = useChatStore();
   const { content, loading } = useFilePreview();
 
-  console.log('uploadedFile', uploadedFile)
   if (!uploadedFile) return null;
 
   return (
@@ -25,11 +25,11 @@ const TaskTable = () => {
       {loading ? (
         <Spin />
       ) : (
-     <div
-    style={{ whiteSpace: "pre-wrap" }}
-    dangerouslySetInnerHTML={{ __html: content || "" }}
-  />
-
+        <div
+          className={cl.tableView}
+          style={{ whiteSpace: "pre-wrap" }}
+          dangerouslySetInnerHTML={{ __html: content || "" }}
+        />
       )}
     </div>
   );
