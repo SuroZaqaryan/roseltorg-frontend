@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Typography, Spin, Flex, Button } from "antd";
+import { useState, useEffect, useRef } from 'react';
+import { Typography, Spin, Flex, Button, Space, Divider } from "antd";
 import { Download } from "lucide-react";
 
 import { useFilePreview } from "../../EntryPanel/lib/useFilePreview";
@@ -12,21 +12,40 @@ const TaskTable = () => {
   const { uploadedFile } = useChatStore();
   const { content, loading } = useFilePreview();
   const contentRef = useRef<HTMLDivElement>(null);
-  const [hasInitialized, setHasInitialized] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [originalContent, setOriginalContent] = useState("");
   const [editableContent, setEditableContent] = useState("");
 
   useEffect(() => {
-    if (content && contentRef.current && !hasInitialized) {
-      contentRef.current.innerHTML = content;
+    if (content && contentRef.current) {
+      setOriginalContent(content);
       setEditableContent(content);
-      setHasInitialized(true);
+      contentRef.current.innerHTML = content;
     }
-  }, [content, hasInitialized]);
+  }, [content]);
 
   const handleInput = () => {
     if (contentRef.current) {
       setEditableContent(contentRef.current.innerHTML);
     }
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditableContent(originalContent);
+    if (contentRef.current) {
+      contentRef.current.innerHTML = originalContent;
+    }
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    setOriginalContent(editableContent);
+    // TODO можно вызывать API сохранения
   };
 
   if (!uploadedFile) return null;
@@ -35,7 +54,21 @@ const TaskTable = () => {
     <div style={{ padding: 16 }}>
       <Flex justify="space-between" align="center" style={{ marginBottom: 12 }}>
         <Text strong>{uploadedFile.name}</Text>
-        <Button icon={<Download size={16} />}>Скачать</Button>
+        <Space>
+          {!isEditing ? (
+            <>
+              <Button onClick={handleEdit}>Редактировать</Button>
+              <Divider style={{ margin: 3 }} type="vertical" />
+            </>
+          ) : (
+            <>
+              <Button type="primary" onClick={handleSave}>Сохранить</Button>
+              <Button onClick={handleCancel}>Отменить</Button>
+              <Divider style={{ margin: 3 }} type="vertical" />
+            </>
+          )}
+          <Button icon={<Download size={16} />}>Скачать</Button>
+        </Space>
       </Flex>
 
       {loading ? (
@@ -44,7 +77,7 @@ const TaskTable = () => {
         <div
           className={cl.contentView}
           ref={contentRef}
-          contentEditable
+          contentEditable={isEditing}
           suppressContentEditableWarning
           onInput={handleInput}
         />
