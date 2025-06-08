@@ -67,17 +67,33 @@ app.post('/api/conversation', upload.single('file'), (req, res) => {
         });
     }
 
-  if (file) {
-    const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
-    const fileUrl = `http://localhost:${PORT}/uploads/${encodeURIComponent(decodedName)}`;
+    if (file) {
+        const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+        const fileUrl = `http://localhost:${PORT}/uploads/${encodeURIComponent(decodedName)}`;
 
-    files.push({
-        name: decodedName,
-        type: file.mimetype,
-        url: fileUrl
-    });
-}
+        files.push({
+            name: decodedName,
+            type: file.mimetype,
+            url: fileUrl
+        });
+    } else {
+        // Если файла нет — подставляем test.xlsx из uploads
+        const testFileName = 'test.xlsx';
+        const testFileUrl = `http://localhost:${PORT}/uploads/${encodeURIComponent(testFileName)}`;
 
+        // Проверяем, что файл реально существует
+        const testFilePath = path.join(UPLOAD_DIR, testFileName);
+        if (fs.existsSync(testFilePath)) {
+            files.push({
+                name: testFileName,
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                url: testFileUrl
+            });
+        } else {
+            // Если файл не найден, можно отправить пустой files или ошибку, но здесь просто оставим пустой массив
+            console.warn(`Файл ${testFileName} не найден в папке uploads`);
+        }
+    }
 
     res.json({
         content: 'Файл получен и загружен (если был передан).',
@@ -85,6 +101,7 @@ app.post('/api/conversation', upload.single('file'), (req, res) => {
         files
     });
 });
+
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
