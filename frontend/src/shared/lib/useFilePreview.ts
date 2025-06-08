@@ -9,12 +9,13 @@ pdfjsLib.GlobalWorkerOptions.workerPort = new pdfWorker();
 
 export const useFilePreview = () => {
   const { uploadedFile } = useChatStore();
-  const [content, setContent] = useState<string | Blob | null>(null);
+  const [officeContent, setOfficeContent] = useState<string | null>(null);
+  const [contentPdf, setContentPdf] = useState<Blob>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!uploadedFile?.url) {
-      setContent(null);
+      setOfficeContent(null);
       return;
     }
 
@@ -27,17 +28,17 @@ export const useFilePreview = () => {
         const ext = getFileExtension(uploadedFile.name);
 
         if (ext === "xlsx" || ext === "xls") {
-          setContent(await parseXlsxFile(blob));
+          setOfficeContent(await parseXlsxFile(blob));
         } else if (ext === "docx") {
-          setContent(await parseDocxFile(blob));
+          setOfficeContent(await parseDocxFile(blob));
         } else if (ext === "pdf") {
-          setContent(blob);
+          setContentPdf(blob);
         } else {
-          setContent("Неподдерживаемый формат файла.");
+          setOfficeContent("Неподдерживаемый формат файла.");
         }
       } catch (err) {
         console.error("Ошибка при чтении файла:", err);
-        setContent("Произошла ошибка при чтении файла.");
+        setOfficeContent("Произошла ошибка при чтении файла.");
       } finally {
         setLoading(false);
       }
@@ -46,5 +47,5 @@ export const useFilePreview = () => {
     fetchFile();
   }, [uploadedFile]);
 
-  return { content, loading };
+  return { officeContent, contentPdf, loading };
 };

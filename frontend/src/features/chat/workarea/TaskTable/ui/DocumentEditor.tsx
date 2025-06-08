@@ -1,35 +1,33 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Spin, Flex, Button, Space, Divider, message } from "antd";
+import { Typography, Flex, Button, Space, Divider, message } from "antd";
 import { Download } from "lucide-react";
-import PdfPreview from "./PdfPreview.tsx";
 import { getFileExtension } from "@shared/lib/utils/getFileExtension";
-import { useFilePreview } from "@shared/lib/useFilePreview.ts";
 import { useChatStore } from "@stores/useChatStore";
+import { useFilePreview } from "@shared/lib/useFilePreview.ts";
+import { useOfficeDownload } from "../lib/useOfficeDownload";
 import cl from '../styles/TaskTable.module.scss';
 
 const { Text } = Typography;
 
-const FilePreviewEditor = () => {
+const DocumentEditor = () => {
   const { uploadedFile } = useChatStore();
-  const { content, loading } = useFilePreview();
+  const { officeContent } = useFilePreview();
+  const { download } = useOfficeDownload();
+
   const ext = getFileExtension(uploadedFile?.name);
-  
+
   const contentRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [originalContent, setOriginalContent] = useState<string | Blob | null>(null);
-  const [editableContent, setEditableContent] = useState<string | Blob | null>(null);
-
+  const [originalContent, setOriginalContent] = useState("");
+  const [editableContent, setEditableContent] = useState("");
 
   useEffect(() => {
-    if (!contentRef.current) return;
-
-    if (typeof content === 'string') {
-      setOriginalContent(content);
-      setEditableContent(content);
-      contentRef.current.innerHTML = content;
+    if (officeContent && contentRef.current) {
+      setOriginalContent(officeContent);
+      setEditableContent(officeContent);
+      contentRef.current.innerHTML = officeContent;
     }
-  }, [content]);
-
+  }, [officeContent]);
 
   const handleInput = () => {
     if (contentRef.current) {
@@ -44,7 +42,7 @@ const FilePreviewEditor = () => {
   const handleCancel = () => {
     setIsEditing(false);
     setEditableContent(originalContent);
-    if (contentRef.current && typeof originalContent === "string") {
+    if (contentRef.current) {
       contentRef.current.innerHTML = originalContent;
     }
   };
@@ -55,27 +53,6 @@ const FilePreviewEditor = () => {
     message.success('Файл успешно сохранен');
     // TODO можно вызывать API сохранения
   };
-
-  const renderContent = () => {
-    if (loading) {
-      return <Spin />;
-    }
-
-    if (ext === 'pdf' && content instanceof Blob) {
-      return <PdfPreview content={content} />;
-    }
-
-    return (
-        <div
-            className={`${cl.contentView} ${ext ? cl[ext] : ''}`}
-            ref={contentRef}
-            contentEditable={isEditing && ext !== 'pdf'}
-            suppressContentEditableWarning
-            onInput={handleInput}
-        />
-    );
-  };
-
 
   if (!uploadedFile) return null;
 
@@ -89,21 +66,28 @@ const FilePreviewEditor = () => {
               <Button onClick={handleEdit}>Редактировать</Button>
               <Divider style={{ margin: 3 }} type="vertical" />
             </>
-          )
-              : (
+          ) : (
             <>
               <Button type="primary" onClick={handleSave}>Сохранить</Button>
               <Button onClick={handleCancel}>Отменить</Button>
               <Divider style={{ margin: 3 }} type="vertical" />
             </>
           )}
-          <Button icon={<Download size={16} />}>Скачать</Button>
+          <Button onClick={() => download(uploadedFile.name, editableContent)} icon={<Download size={16} />}>
+            Скачать
+          </Button>
         </Space>
       </Flex>
 
-      {renderContent()}
+      <div
+        className={`${cl.contentView} ${ext ? cl[ext] : ''}`}
+        ref={contentRef}
+        contentEditable={isEditing}
+        suppressContentEditableWarning
+        onInput={handleInput}
+      />
     </div>
   );
 };
 
-export default FilePreviewEditor;
+export default DocumentEditor;

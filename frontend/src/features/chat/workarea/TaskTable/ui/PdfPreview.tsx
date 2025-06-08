@@ -1,22 +1,32 @@
+import workerSrc from 'pdfjs-dist/build/pdf.worker.min?url';
+pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import workerSrc from 'pdfjs-dist/build/pdf.worker.min?url';
+import { Flex, Typography, Tooltip, Button, Divider } from 'antd';
+import { Plus, Minus, Download } from 'lucide-react';
+import { useFilePreview } from "@shared/lib/useFilePreview.ts";
+import { useChatStore } from "@stores/useChatStore";
+import { usePdfDownload } from "../lib/usePdfDownload";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+const { Text } = Typography;
 
-function PdfPreview({ content }: { content: Blob }) {
-    const [numPages, setNumPages] = useState<number | null>(null);
-    const [pageNumber, setPageNumber] = useState(1);
+function PdfPreview() {
+    const { uploadedFile } = useChatStore();
+    const { contentPdf } = useFilePreview();
+
     const [scale, setScale] = useState(1.0);
-    const [showThumbnails, setShowThumbnails] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [numPages, setNumPages] = useState<number | null>(null);
 
-    // При смене content сбрасываем страницу и кол-во страниц
+    const downloadPdf = usePdfDownload(contentPdf, uploadedFile?.name || 'document.pdf');
+
     useEffect(() => {
         setNumPages(null);
         setPageNumber(1);
-    }, [content]);
+    }, [contentPdf]);
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
         setNumPages(numPages);
@@ -43,30 +53,50 @@ function PdfPreview({ content }: { content: Blob }) {
         setScale(prev => Math.max(prev - 0.25, 0.5));
     }
 
-    function toggleThumbnails() {
-        setShowThumbnails(!showThumbnails);
-    }
-
-    if (!content) {
-        return <div>No PDF content provided.</div>;
-    }
-
     return (
         <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                <button onClick={toggleThumbnails}>
-                    {showThumbnails ? 'Hide Thumbnails' : 'Show Thumbnails'}
-                </button>
-                <button onClick={goToPrevPage} disabled={pageNumber <= 1}>Previous</button>
-                <span>Page {pageNumber} of {numPages ?? '?'}</span>
-                <button onClick={goToNextPage} disabled={numPages ? pageNumber >= numPages : true}>Next</button>
-                <button onClick={zoomOut} disabled={scale <= 0.5}>-</button>
-                <span>{Math.round(scale * 100)}%</span>
-                <button onClick={zoomIn} disabled={scale >= 3.0}>+</button>
-            </div>
+            <Flex justify='space-between' wrap="wrap" gap={10} style={{ marginBottom: 20 }}>
+                <Flex align='center' gap={8}>
+                    <Text strong>{uploadedFile?.name}</Text>
+
+                    <Divider type='vertical' />
+
+                    <Flex align='center' gap={12}>
+                        <Button onClick={goToPrevPage} type='primary' size='middle' disabled={pageNumber <= 1}>
+                            <small>Следующий</small>
+                        </Button>
+
+                        <Text style={{ fontSize: 14 }}>Страница {pageNumber} из {numPages ?? '?'}</Text>
+
+                        <Button onClick={goToNextPage} type='primary' size='middle' disabled={numPages ? pageNumber >= numPages : true}>
+                            <small>Предыдущий</small>
+                        </Button>
+                    </Flex>
+                </Flex>
+
+                <Flex align='center' gap={8}>
+                    <Flex align='center' gap={6}>
+                        <Tooltip title="search">
+                            <Button onClick={zoomOut} disabled={scale <= 0.5} variant="outlined" shape="circle" size='small' icon={<Minus size={14} />} />
+                        </Tooltip>
+
+                        <Text style={{ fontSize: '14px' }}>{Math.round(scale * 100)}%</Text>
+
+                        <Tooltip title="search">
+                            <Button onClick={zoomIn} disabled={scale >= 3.0} variant="outlined" shape="circle" size='small' icon={<Plus size={14} />} />
+                        </Tooltip>
+                    </Flex>
+
+                    <Divider type='vertical' />
+
+                    <Button  onClick={downloadPdf} icon={<Download size={16} />}>
+                        Скачать
+                    </Button>
+                </Flex>
+            </Flex>
 
             <div style={{ display: 'flex', gap: '20px' }}>
-                {showThumbnails && numPages && (
+                {numPages && (
                     <div style={{
                         width: '150px',
                         overflowY: 'auto',
@@ -76,7 +106,7 @@ function PdfPreview({ content }: { content: Blob }) {
                         padding: '10px',
                         backgroundColor: '#f5f5f5'
                     }}>
-                        <Document file={content} loading="Loading thumbnails...">
+                        <Document file={contentPdf} loading="Loading thumbnails...">
                             {Array.from(new Array(numPages), (_, index) => (
                                 <div
                                     key={`thumb_${index + 1}`}
@@ -103,14 +133,14 @@ function PdfPreview({ content }: { content: Blob }) {
 
                 <div style={{ flex: 1 }}>
                     <Document
-                        file={content}
+                        file={contentPdf}
                         onLoadSuccess={onDocumentLoadSuccess}
                         loading="Loading PDF..."
                     >
                         <Page
                             pageNumber={pageNumber}
                             scale={scale}
-                            width={Math.min(800 * scale, window.innerWidth - (showThumbnails ? 200 : 40))}
+                            width={Math.min(800 * scale, window.innerWidth - 200)}
                         />
                     </Document>
                 </div>

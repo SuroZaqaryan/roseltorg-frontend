@@ -1,3 +1,5 @@
+import { Button } from "antd";
+
 const theme = {
     token: {
         colorPrimary: '#1c1c1c',
@@ -19,6 +21,10 @@ const theme = {
         Typography: {
             fontSize: 16, // базовый размер шрифта
         },
+
+        Button: {
+            primaryShadow: "none",
+        }
     }
 }
 
