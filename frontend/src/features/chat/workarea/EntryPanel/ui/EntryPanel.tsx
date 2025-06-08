@@ -3,10 +3,10 @@ import { Welcome, Prompts } from "@ant-design/x";
 
 import { useChatStore } from "@stores/useChatStore";
 
-import TaskTable from "../../TaskTable/ui/TaskTable.tsx";
+import FilePreviewEditor from "../../TaskTable/ui/FilePreviewEditor.tsx";
 
 import { getPromptItems } from "../lib/getPromptItems";
-import { useFilePreview } from "../lib/useFilePreview";
+import { useFilePreview } from "@shared/lib/useFilePreview.ts";
 
 import cl from "../styles/entryPanel.module.scss";
 
@@ -26,7 +26,7 @@ const EntryPanel = () => {
                   loading ? (
                       <Skeleton active title={false} paragraph={{ rows: 12, width: ['100%', '80%', '90%', '60%'] }} />
                   ) : (
-                      <TaskTable  />
+                      <FilePreviewEditor  />
                   )
               ) : (
                   <>

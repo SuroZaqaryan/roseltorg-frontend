@@ -1,6 +1,5 @@
 import * as XLSX from "xlsx";
 import * as mammoth from "mammoth";
-import * as pdfjsLib from 'pdfjs-dist';
 
 type ParsedResult = Promise<string>;
 
@@ -71,19 +70,4 @@ export const parseDocxFile = async (blob: Blob): ParsedResult => {
   const result = await mammoth.convertToHtml({ arrayBuffer });
   const doc = new DOMParser().parseFromString(result.value, "text/html");
   return doc.body.innerHTML;
-};
-
-export const parsePdfFile = async (blob: Blob): ParsedResult => {
-  const arrayBuffer = await blob.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-  const pages: string[] = [];
-
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const textContent = await page.getTextContent();
-    const text = textContent.items.map((item) => ("str" in item ? item.str : "")).join(" ");
-    pages.push(text);
-  }
-
-  return pages.join("\n\n");
 };

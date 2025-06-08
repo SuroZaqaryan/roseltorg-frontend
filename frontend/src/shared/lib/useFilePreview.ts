@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useChatStore } from "@stores/useChatStore";
-import { parseXlsxFile, parseDocxFile, parsePdfFile } from "./fileParsers";
-import { getFileExtension } from "@shared/lib/utils/getFileExtension";
-// @ts-ignore
+import { useChatStore } from "@stores/useChatStore.ts";
+import { parseXlsxFile, parseDocxFile } from "@shared/lib/fileParsers.ts";
+import { getFileExtension } from "@shared/lib/utils/getFileExtension.ts";
 import pdfWorker from "pdfjs-dist/build/pdf.worker?worker";
 import * as pdfjsLib from "pdfjs-dist";
 
@@ -10,7 +9,7 @@ pdfjsLib.GlobalWorkerOptions.workerPort = new pdfWorker();
 
 export const useFilePreview = () => {
   const { uploadedFile } = useChatStore();
-  const [content, setContent] = useState<string | null>(null);
+  const [content, setContent] = useState<string | Blob | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export const useFilePreview = () => {
         } else if (ext === "docx") {
           setContent(await parseDocxFile(blob));
         } else if (ext === "pdf") {
-          setContent(await parsePdfFile(blob));
+          setContent(blob);
         } else {
           setContent("Неподдерживаемый формат файла.");
         }
