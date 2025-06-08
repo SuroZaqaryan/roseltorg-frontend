@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useChatStore } from "@stores/useChatStore";
 import { parseXlsxFile, parseDocxFile, parsePdfFile } from "./fileParsers";
+import { getFileExtension } from "@shared/lib/utils/getFileExtension";
 // @ts-ignore
 import pdfWorker from "pdfjs-dist/build/pdf.worker?worker";
 import * as pdfjsLib from "pdfjs-dist";
@@ -24,7 +25,7 @@ export const useFilePreview = () => {
         const res = await fetch(uploadedFile.url);
         if (!res.ok) throw new Error(`Ошибка загрузки файла: ${res.status}`);
         const blob = await res.blob();
-        const ext = uploadedFile.name?.split(".").pop()?.toLowerCase();
+        const ext = getFileExtension(uploadedFile.name);
 
         if (ext === "xlsx" || ext === "xls") {
           setContent(await parseXlsxFile(blob));

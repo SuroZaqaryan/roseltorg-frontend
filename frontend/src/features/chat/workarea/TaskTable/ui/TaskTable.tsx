@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Spin, Flex, Button, Space, Divider } from "antd";
+import { Typography, Spin, Flex, Button, Space, Divider, message } from "antd";
 import { Download } from "lucide-react";
+import { getFileExtension } from "@shared/lib/utils/getFileExtension";
 
 import { useFilePreview } from "../../EntryPanel/lib/useFilePreview";
 import { useChatStore } from "@stores/useChatStore";
@@ -11,6 +12,8 @@ const { Text } = Typography;
 const TaskTable = () => {
   const { uploadedFile } = useChatStore();
   const { content, loading } = useFilePreview();
+  const ext = getFileExtension(uploadedFile?.name);
+  
   const contentRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [originalContent, setOriginalContent] = useState("");
@@ -45,6 +48,7 @@ const TaskTable = () => {
   const handleSave = () => {
     setIsEditing(false);
     setOriginalContent(editableContent);
+    message.success('Файл успешно сохранен');
     // TODO можно вызывать API сохранения
   };
 
@@ -75,7 +79,7 @@ const TaskTable = () => {
         <Spin />
       ) : (
         <div
-          className={cl.contentView}
+          className={`${cl.contentView} ${ext ? cl[ext] : ''}`}
           ref={contentRef}
           contentEditable={isEditing}
           suppressContentEditableWarning

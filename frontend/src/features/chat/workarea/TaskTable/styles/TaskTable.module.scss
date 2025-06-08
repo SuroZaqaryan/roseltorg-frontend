@@ -1,26 +1,30 @@
 .contentView {
-    outline: none;
-    table {
-        width: 100%;
-        border-collapse: collapse;
+  outline: none;
 
-        thead th,
-        tbody td {
-            padding: 14px;
-            border: 1px solid #ddd;
-        }
+  table {
+    width: 100%;
+    border-collapse: collapse;
 
-        tbody tr {
-            border-bottom: 1px solid #ddd;
-        }
-
-        img {
-            max-width: 100%;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f26b;
-        }
+    thead th,
+    tbody td {
+      padding: 8px;
+      border: 1px solid #ddd;
     }
 
+    tbody tr {
+      border-bottom: 1px solid #ddd;
+
+      &:nth-child(even) {
+        background-color: #f2f2f241;
+      }
+    }
+
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
+.docx tbody td {
+    padding: 0 8px !important;
 }
