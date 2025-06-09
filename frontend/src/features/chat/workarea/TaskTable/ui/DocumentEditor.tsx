@@ -57,7 +57,7 @@ const DocumentEditor = () => {
   if (!uploadedFile) return null;
 
   return (
-    <div style={{ padding: 16 }}>
+    <>
       <Flex justify="space-between" align="center" style={{ marginBottom: 12 }}>
         <Text strong>{uploadedFile.name}</Text>
 
@@ -87,7 +87,7 @@ const DocumentEditor = () => {
         suppressContentEditableWarning
         onInput={handleInput}
       />
-    </div>
+    </>
   );
 };
 

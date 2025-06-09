@@ -1,17 +1,13 @@
 import React from "react";
-
 import { Space } from "antd";
-
 import { Rocket, BookCopy } from "lucide-react";
-
 import type { PromptsProps } from "@ant-design/x";
-
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
     <Space align="start">
         {icon}
         <span>{title}</span>
-        </Space>
+    </Space>
 );
 
 export const getPromptItems = (): PromptsProps['items'] => [
@@ -32,7 +28,7 @@ export const getPromptItems = (): PromptsProps['items'] => [
     },
     {
         key: '2',
-        label: renderTitle(<BookCopy  />, 'Загрузка и изменение ТЗ'),
+        label: renderTitle(<BookCopy />, 'Загрузка и изменение ТЗ'),
         description: 'Загрузите готовый документ и дополните его новыми данными в чате',
         children: [
             {

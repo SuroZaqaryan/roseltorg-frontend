@@ -54,7 +54,7 @@ function PdfPreview() {
     }
 
     return (
-        <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
+        <>
             <Flex justify='space-between' wrap="wrap" gap={10} style={{ marginBottom: 20 }}>
                 <Text strong>{uploadedFile?.name}</Text>
 
@@ -90,57 +90,69 @@ function PdfPreview() {
                 </Flex>
             </Flex>
 
-            <div style={{ display: 'flex', gap: '20px' }}>
-                {numPages && (
-                    <div style={{
-                        width: '150px',
-                        overflowY: 'auto',
-                        maxHeight: '80vh',
-                        border: '1px solid #ddd',
-                        borderRadius: '4px',
-                        padding: '10px',
-                        backgroundColor: '#f5f5f5'
-                    }}>
-                        <Document file={contentPdf} loading="Loading thumbnails...">
-                            {Array.from(new Array(numPages), (_, index) => (
-                                <div
-                                    key={`thumb_${index + 1}`}
-                                    onClick={() => setPageNumber(index + 1)}
-                                    style={{
-                                        marginBottom: '10px',
-                                        cursor: 'pointer',
-                                        border: pageNumber === index + 1 ? '2px solid #0066ff' : '1px solid #ccc',
-                                        borderRadius: '4px',
-                                        overflow: 'hidden'
-                                    }}
-                                >
-                                    <Page
-                                        pageNumber={index + 1}
-                                        width={120}
-                                        renderAnnotationLayer={false}
-                                        renderTextLayer={false}
-                                    />
-                                </div>
-                            ))}
-                        </Document>
-                    </div>
-                )}
-
-                <div style={{ flex: 1 }}>
-                    <Document
-                        file={contentPdf}
-                        onLoadSuccess={onDocumentLoadSuccess}
-                        loading="Loading PDF..."
+          <Flex gap={20} style={{ overflow: 'hidden', alignItems: 'flex-start' }}>
+    {numPages && (
+        <div
+            style={{
+                width: '150px',
+                position: 'sticky',
+                top: 0,
+                maxHeight: '80vh',
+                overflowY: 'auto',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                padding: '10px',
+                backgroundColor: '#f5f5f5',
+                flexShrink: 0, // чтобы не сжимался
+            }}
+        >
+            <Document file={contentPdf} loading="Loading thumbnails...">
+                {Array.from(new Array(numPages), (_, index) => (
+                    <div
+                        key={`thumb_${index + 1}`}
+                        onClick={() => setPageNumber(index + 1)}
+                        style={{
+                            marginBottom: '10px',
+                            cursor: 'pointer',
+                            border: pageNumber === index + 1 ? '2px solid #1c1c1c' : '1px solid #ccc',
+                            borderRadius: '4px',
+                            overflow: 'hidden'
+                        }}
                     >
                         <Page
-                            pageNumber={pageNumber}
-                            scale={scale}
-                            width={Math.min(800 * scale, window.innerWidth - 200)}
+                            pageNumber={index + 1}
+                            width={120}
+                            renderAnnotationLayer={false}
+                            renderTextLayer={false}
                         />
-                    </Document>
-                </div>
-            </div>
+                    </div>
+                ))}
+            </Document>
         </div>
+    )}
+
+    <div
+        style={{
+            flex: 1,
+            overflow: 'auto',
+            maxHeight: '80vh', // чтобы правая часть скроллилась отдельно
+        }}
+    >
+        <Document
+            file={contentPdf}
+            onLoadSuccess={onDocumentLoadSuccess}
+            loading="Загрузка PDF..."
+        >
+            <Page
+                pageNumber={pageNumber}
+                scale={scale}
+                width={Math.min(800 * scale, window.innerWidth - 200)}
+            />
+        </Document>
+    </div>
+</Flex>
+
+        </>
     );
 }
 

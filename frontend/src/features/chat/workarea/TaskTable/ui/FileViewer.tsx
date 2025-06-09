@@ -16,10 +16,10 @@ const FileViewer = () => {
     if (loading) return <Spin />;
 
     return (
-        <>
+        <div style={{ padding: 16, height: '100%', display: 'flex', flexDirection: 'column' }}>
             {isPdf && <PdfPreview />}
             {isOffice && <DocumentEditor />}
-        </>
+        </div>
     );
 
 };

@@ -1,0 +1,25 @@
+.prompts {
+    .ant-space-item {
+        background-color: rgb(200, 255, 0) !important;
+    }
+}
+
+.welcomeCardContainer {
+    height: 100%;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid #d8dde6;
+
+    .welcomeCardContent {
+        max-width: 1000px;
+        margin: auto;
+        padding: 32px;
+        height: 100%;
+    }
+
+    .welcomeCard {
+        background-color: #fff;
+        border-radius: 16px;
+        border-color: #dedede;
+    }
+}

@@ -1,4 +1,6 @@
 .contentView {
+  height: 100%;
+  overflow: auto;
   outline: none;
 
   table {
@@ -26,5 +28,5 @@
 }
 
 .docx tbody td {
-    padding: 0 8px !important;
+  padding: 0 8px !important;
 }
