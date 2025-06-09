@@ -17,6 +17,7 @@ const WelcomePrompts = () => {
             icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
             title="Привет! Какой у тебя сегодня запрос?"
             description="Я помогу вам быстро составить или обновить ТЗ — просто начните с запроса в чате!"
+            style={{ flexWrap: 'wrap' }}
           />
         </Card>
 
