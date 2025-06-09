@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Spin, Flex } from 'antd';
 import PdfPreview from "./PdfPreview.tsx";
 import DocumentEditor from "./DocumentEditor.tsx";
 import { getFileExtension } from "@shared/lib/utils/getFileExtension";
@@ -16,10 +16,10 @@ const FileViewer = () => {
     if (loading) return <Spin />;
 
     return (
-        <div style={{ padding: 16, height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Flex vertical style={{ width: '100%', height: '100%', padding: 16 }}>
             {isPdf && <PdfPreview />}
             {isOffice && <DocumentEditor />}
-        </div>
+        </Flex>
     );
 
 };
