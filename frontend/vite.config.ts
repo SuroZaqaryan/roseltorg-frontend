@@ -29,12 +29,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@app': path.resolve(__dirname, 'src/app'),
-      '@features': path.resolve(__dirname, 'src/features'),
-      '@shared': path.resolve(__dirname, 'src/shared'),
-      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@public': path.resolve(__dirname, 'public'),
       '@theme': path.resolve(__dirname, 'src/theme'),
-      '@stores': path.resolve(__dirname, 'src/shared/stores'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@shared': path.resolve(__dirname, 'src/shared'),
+      '@features': path.resolve(__dirname, 'src/features'),
       '@types': path.resolve(__dirname, 'src/shared/types'),
+      '@stores': path.resolve(__dirname, 'src/shared/stores'),
     }
   },
   css: {

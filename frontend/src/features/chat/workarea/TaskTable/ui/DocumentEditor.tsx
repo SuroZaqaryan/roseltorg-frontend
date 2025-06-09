@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Flex, Button, Space, Divider, message } from "antd";
-import { Download } from "lucide-react";
-import { getFileExtension } from "@shared/lib/utils/getFileExtension";
-import { useChatStore } from "@stores/useChatStore";
-import { useFilePreview } from "@shared/lib/useFilePreview.ts";
-import { useOfficeDownload } from "../lib/useOfficeDownload";
-import cl from '../styles/TaskTable.module.scss';
+import { Typography, Flex, Button, Space, Divider, message } from 'antd';
+import { Download } from 'lucide-react';
+import { getFileExtension } from '@shared/lib/utils/getFileExtension';
+import { useFilePreview } from '@shared/lib/useFilePreview.ts';
+import { useChatStore } from '@stores/useChatStore';
+import { useOfficeDownload } from '../lib/useOfficeDownload';
+import cl from '../styles/DocEdtior.module.scss';
 
 const { Text } = Typography;
 
@@ -58,10 +58,10 @@ const DocumentEditor = () => {
 
   return (
     <>
-      <Flex justify="space-between" align="center" style={{ marginBottom: 12 }}>
+      <Flex justify="space-between" wrap gap={20} align="center" style={{ marginBottom: 12 }}>
         <Text strong>{uploadedFile.name}</Text>
 
-        <Space>
+        <Space wrap>
           {!isEditing ? (
             <>
               <Button onClick={handleEdit}>Редактировать</Button>

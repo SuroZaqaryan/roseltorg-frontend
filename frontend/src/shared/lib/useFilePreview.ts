@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { http } from '@shared/api/http'
 import { useChatStore } from "@stores/useChatStore.ts";
 import { parseXlsxFile, parseDocxFile } from "@shared/lib/fileParsers.ts";
 import { getFileExtension } from "@shared/lib/utils/getFileExtension.ts";
@@ -12,6 +13,8 @@ export const useFilePreview = () => {
   const [officeContent, setOfficeContent] = useState<string | null>(null);
   const [contentPdf, setContentPdf] = useState<Blob>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (!uploadedFile?.url) {
@@ -22,23 +25,27 @@ export const useFilePreview = () => {
     const fetchFile = async () => {
       try {
         setLoading(true);
-        const res = await fetch(uploadedFile.url);
-        if (!res.ok) throw new Error(`Ошибка загрузки файла: ${res.status}`);
-        const blob = await res.blob();
+        const res = await http.get(uploadedFile.url, { responseType: "blob" });
+        const blob = res.data;
         const ext = getFileExtension(uploadedFile.name);
 
         if (ext === "xlsx" || ext === "xls") {
+          setError(null);
           setOfficeContent(await parseXlsxFile(blob));
-        } else if (ext === "docx") {
+        }
+        else if (ext === "docx") {
+          setError(null);
           setOfficeContent(await parseDocxFile(blob));
-        } else if (ext === "pdf") {
+        }
+        else if (ext === "pdf") {
+          setError(null);
           setContentPdf(blob);
-        } else {
-          setOfficeContent("Неподдерживаемый формат файла.");
+        }
+        else {
+          setError("Пожалуйста, выберите один из поддерживаемых форматов: XLSX, DOCX, PDF.");
         }
       } catch (err) {
-        console.error("Ошибка при чтении файла:", err);
-        setOfficeContent("Произошла ошибка при чтении файла.");
+        setError("Произошла ошибка при чтении файла.");
       } finally {
         setLoading(false);
       }
@@ -47,5 +54,5 @@ export const useFilePreview = () => {
     fetchFile();
   }, [uploadedFile]);
 
-  return { officeContent, contentPdf, loading };
+  return { officeContent, contentPdf, loading, error };
 };
