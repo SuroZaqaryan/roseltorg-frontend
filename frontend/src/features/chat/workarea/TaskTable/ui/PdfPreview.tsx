@@ -3,7 +3,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { Flex, Typography, Tooltip, Button, Divider } from 'antd';
+import { Flex, Typography, Tooltip, Button } from 'antd';
 import { Plus, Minus, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useFilePreview } from "@shared/lib/useFilePreview.ts";
 import { useChatStore } from "@stores/useChatStore";
@@ -103,7 +103,7 @@ function PdfPreview() {
                 borderRadius: '4px',
                 padding: '10px',
                 backgroundColor: '#f5f5f5',
-                flexShrink: 0, // чтобы не сжимался
+                flexShrink: 0,
             }}
         >
             <Document file={contentPdf} loading="Loading thumbnails...">
@@ -135,7 +135,7 @@ function PdfPreview() {
         style={{
             flex: 1,
             overflow: 'auto',
-            maxHeight: '80vh', // чтобы правая часть скроллилась отдельно
+            maxHeight: '80vh',
         }}
     >
         <Document
