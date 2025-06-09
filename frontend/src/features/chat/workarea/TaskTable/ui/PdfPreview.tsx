@@ -3,7 +3,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { Flex, Typography, Tooltip, Button } from 'antd';
+import { Flex, Typography, Tooltip, Button, message } from 'antd';
 import { Plus, Minus, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useFilePreview } from "@shared/lib/useFilePreview.ts";
 import { useChatStore } from "@stores/useChatStore";
@@ -16,12 +16,16 @@ const { Text } = Typography;
 function PdfPreview() {
     const { uploadedFile } = useChatStore();
     const { contentPdf } = useFilePreview();
+    const download = usePdfDownload(contentPdf, uploadedFile?.name);
 
     const [scale, setScale] = useState(1.0);
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages, setNumPages] = useState<number | null>(null);
 
-    const downloadPdf = usePdfDownload(contentPdf, uploadedFile?.name || 'document.pdf');
+    const downloadPdf = () => {
+        download();
+        message.success('Файл успешно скачан');
+    }
 
     useEffect(() => {
         setNumPages(null);
@@ -83,74 +87,74 @@ function PdfPreview() {
                             <Button onClick={goToNextPage} variant="outlined" shape="circle" size='small' icon={<ChevronRight size={14} />} />
                         </Tooltip>
                     </Flex>
-                    
+
                     <Button onClick={downloadPdf} type="primary" icon={<Download size={16} />}>
                         Скачать
                     </Button>
                 </Flex>
             </Flex>
 
-          <Flex gap={20} style={{ overflow: 'hidden', alignItems: 'flex-start' }}>
-    {numPages && (
-        <div
-            style={{
-                width: '150px',
-                position: 'sticky',
-                top: 0,
-                maxHeight: '80vh',
-                overflowY: 'auto',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-                padding: '10px',
-                backgroundColor: '#f5f5f5',
-                flexShrink: 0,
-            }}
-        >
-            <Document file={contentPdf} loading="Loading thumbnails...">
-                {Array.from(new Array(numPages), (_, index) => (
+            <Flex gap={20} style={{ overflow: 'hidden', alignItems: 'flex-start' }}>
+                {numPages && (
                     <div
-                        key={`thumb_${index + 1}`}
-                        onClick={() => setPageNumber(index + 1)}
                         style={{
-                            marginBottom: '10px',
-                            cursor: 'pointer',
-                            border: pageNumber === index + 1 ? '2px solid #1c1c1c' : '1px solid #ccc',
+                            width: '150px',
+                            position: 'sticky',
+                            top: 0,
+                            maxHeight: '80vh',
+                            overflowY: 'auto',
+                            border: '1px solid #ddd',
                             borderRadius: '4px',
-                            overflow: 'hidden'
+                            padding: '10px',
+                            backgroundColor: '#f5f5f5',
+                            flexShrink: 0,
                         }}
                     >
-                        <Page
-                            pageNumber={index + 1}
-                            width={120}
-                            renderAnnotationLayer={false}
-                            renderTextLayer={false}
-                        />
+                        <Document file={contentPdf} loading="Loading thumbnails...">
+                            {Array.from(new Array(numPages), (_, index) => (
+                                <div
+                                    key={`thumb_${index + 1}`}
+                                    onClick={() => setPageNumber(index + 1)}
+                                    style={{
+                                        marginBottom: '10px',
+                                        cursor: 'pointer',
+                                        border: pageNumber === index + 1 ? '2px solid #1c1c1c' : '1px solid #ccc',
+                                        borderRadius: '4px',
+                                        overflow: 'hidden'
+                                    }}
+                                >
+                                    <Page
+                                        pageNumber={index + 1}
+                                        width={120}
+                                        renderAnnotationLayer={false}
+                                        renderTextLayer={false}
+                                    />
+                                </div>
+                            ))}
+                        </Document>
                     </div>
-                ))}
-            </Document>
-        </div>
-    )}
+                )}
 
-    <div
-        style={{
-            flex: 1,
-            overflow: 'auto',
-            maxHeight: '80vh',
-        }}
-    >
-        <Document
-            file={contentPdf}
-            onLoadSuccess={onDocumentLoadSuccess}
-            loading="Загрузка PDF..."
-        >
-            <Page
-                pageNumber={pageNumber}
-                scale={scale}
-                width={Math.min(800 * scale, window.innerWidth - 200)}
-            />
-        </Document>
-    </div>
-</Flex>
+                <div
+                    style={{
+                        flex: 1,
+                        overflow: 'auto',
+                        maxHeight: '80vh',
+                    }}
+                >
+                    <Document
+                        file={contentPdf}
+                        onLoadSuccess={onDocumentLoadSuccess}
+                        loading="Загрузка PDF..."
+                    >
+                        <Page
+                            pageNumber={pageNumber}
+                            scale={scale}
+                            width={Math.min(800 * scale, window.innerWidth - 200)}
+                        />
+                    </Document>
+                </div>
+            </Flex>
 
         </>
     );

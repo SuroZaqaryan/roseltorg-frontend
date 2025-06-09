@@ -54,7 +54,13 @@ const DocumentEditor = () => {
     // TODO можно вызывать API сохранения
   };
 
+  
   if (!uploadedFile) return null;
+  
+  const downloadFile = () => {
+    download(uploadedFile.name, editableContent);
+    message.success('Файл успешно скачан');
+  }
 
   return (
     <>
@@ -74,7 +80,10 @@ const DocumentEditor = () => {
               <Divider style={{ margin: 3 }} type="vertical" />
             </>
           )}
-          <Button type="primary" onClick={() => download(uploadedFile.name, editableContent)} icon={<Download size={16} />}>
+          <Button
+            type="primary"
+            onClick={downloadFile}
+            icon={<Download size={16} />}>
             Скачать
           </Button>
         </Space>
