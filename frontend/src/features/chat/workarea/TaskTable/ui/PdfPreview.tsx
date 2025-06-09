@@ -138,6 +138,8 @@ function PdfPreview() {
                 <div
                     style={{
                         flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
                         overflow: 'auto',
                         maxHeight: '80vh',
                     }}
