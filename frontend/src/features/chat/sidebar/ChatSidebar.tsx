@@ -26,7 +26,7 @@ const { Text } = Typography;
 export const ChatSidebar = (props: SidebarChatProps) => {
     const { token } = useToken();
     const { styles } = useChatSidebarStyle();
-    
+
     const abortController = useRef<AbortController>(null);
 
     const {
@@ -197,9 +197,18 @@ export const ChatSidebar = (props: SidebarChatProps) => {
         >
             <Attachments
                 ref={attachmentsRef}
-                beforeUpload={() => false}
+                beforeUpload={(_, fileList) => {
+                    if (files.length >= 1 || fileList.length > 1) {
+                        return false;
+                    }
+                    return false; 
+                }}
                 items={files}
                 onChange={({ fileList }) => {
+                    if (fileList.length > 1) {
+                        return;
+                    }
+
                     const updated = fileList.map((file) => {
                         if (!file.url && file.originFileObj) {
                             return {
@@ -217,7 +226,7 @@ export const ChatSidebar = (props: SidebarChatProps) => {
                         : {
                             icon: <CloudUploadOutlined />,
                             title: 'Загрузить файлы',
-                            description: 'Нажмите или перетащите файлы в эту область для загрузки',
+                            description: 'Нажмите или перетащите файл в эту область для загрузки',
                         }
                 }
             />

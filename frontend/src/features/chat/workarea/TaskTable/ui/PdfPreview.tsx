@@ -4,7 +4,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Flex, Typography, Tooltip, Button, Divider } from 'antd';
-import { Plus, Minus, Download } from 'lucide-react';
+import { Plus, Minus, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useFilePreview } from "@shared/lib/useFilePreview.ts";
 import { useChatStore } from "@stores/useChatStore";
 import { usePdfDownload } from "../lib/usePdfDownload";
@@ -56,40 +56,35 @@ function PdfPreview() {
     return (
         <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
             <Flex justify='space-between' wrap="wrap" gap={10} style={{ marginBottom: 20 }}>
-                <Flex align='center' gap={8}>
-                    <Text strong>{uploadedFile?.name}</Text>
+                <Text strong>{uploadedFile?.name}</Text>
 
-                    <Divider type='vertical' />
-
-                    <Flex align='center' gap={12}>
-                        <Button onClick={goToPrevPage} type='primary' size='middle' disabled={pageNumber <= 1}>
-                            <small>Следующий</small>
-                        </Button>
-
-                        <Text style={{ fontSize: 14 }}>Страница {pageNumber} из {numPages ?? '?'}</Text>
-
-                        <Button onClick={goToNextPage} type='primary' size='middle' disabled={numPages ? pageNumber >= numPages : true}>
-                            <small>Предыдущий</small>
-                        </Button>
-                    </Flex>
-                </Flex>
-
-                <Flex align='center' gap={8}>
+                <Flex align='center' gap={24}>
                     <Flex align='center' gap={6}>
-                        <Tooltip title="search">
+                        <Tooltip title="Уменьшить">
                             <Button onClick={zoomOut} disabled={scale <= 0.5} variant="outlined" shape="circle" size='small' icon={<Minus size={14} />} />
                         </Tooltip>
 
                         <Text style={{ fontSize: '14px' }}>{Math.round(scale * 100)}%</Text>
 
-                        <Tooltip title="search">
+                        <Tooltip title="Увеличить">
                             <Button onClick={zoomIn} disabled={scale >= 3.0} variant="outlined" shape="circle" size='small' icon={<Plus size={14} />} />
                         </Tooltip>
                     </Flex>
 
-                    <Divider type='vertical' />
 
-                    <Button  onClick={downloadPdf} icon={<Download size={16} />}>
+                    <Flex align='center' gap={12}>
+                        <Tooltip title="Следующий">
+                            <Button onClick={goToPrevPage} variant="outlined" shape="circle" size='small' icon={<ChevronLeft size={14} />} />
+                        </Tooltip>
+
+                        <Text style={{ fontSize: 14 }}>Страница {pageNumber} из {numPages ?? '?'}</Text>
+
+                        <Tooltip title="Предыдущий">
+                            <Button onClick={goToNextPage} variant="outlined" shape="circle" size='small' icon={<ChevronRight size={14} />} />
+                        </Tooltip>
+                    </Flex>
+                    
+                    <Button onClick={downloadPdf} type="primary" icon={<Download size={16} />}>
                         Скачать
                     </Button>
                 </Flex>

@@ -60,6 +60,7 @@ const DocumentEditor = () => {
     <div style={{ padding: 16 }}>
       <Flex justify="space-between" align="center" style={{ marginBottom: 12 }}>
         <Text strong>{uploadedFile.name}</Text>
+
         <Space>
           {!isEditing ? (
             <>
@@ -73,7 +74,7 @@ const DocumentEditor = () => {
               <Divider style={{ margin: 3 }} type="vertical" />
             </>
           )}
-          <Button onClick={() => download(uploadedFile.name, editableContent)} icon={<Download size={16} />}>
+          <Button type="primary" onClick={() => download(uploadedFile.name, editableContent)} icon={<Download size={16} />}>
             Скачать
           </Button>
         </Space>
