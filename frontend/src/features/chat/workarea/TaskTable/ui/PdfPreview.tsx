@@ -58,7 +58,7 @@ function PdfPreview() {
             <Flex justify='space-between' wrap="wrap" gap={10} style={{ marginBottom: 20 }}>
                 <Text strong>{uploadedFile?.name}</Text>
 
-                <Flex align='center' wrapF gap={24}>
+                <Flex align='center' wrap gap={24}>
                     <Flex align='center' gap={6}>
                         <Tooltip title="Уменьшить">
                             <Button onClick={zoomOut} disabled={scale <= 0.5} variant="outlined" shape="circle" size='small' icon={<Minus size={14} />} />
